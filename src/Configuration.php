@@ -13,10 +13,10 @@ class Configuration {
 
     //Tech Prefix
     //TODO: Replace the $username with an appropriate value
-    public static $username = 'TODO: Replace';
+    public static $username = '11656133';
 
     //API Secret Key
     //TODO: Replace the $password with an appropriate value
-    public static $password = 'TODO: Replace';
+    public static $password = 'nVuomGMxHzvUWPXTZhdo52meUexBaGVM';
 
 }
