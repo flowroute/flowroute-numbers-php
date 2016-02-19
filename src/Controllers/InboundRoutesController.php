@@ -111,6 +111,7 @@ class InboundRoutesController {
 
         //validate and preprocess url
         $queryUrl = APIHelper::cleanUrl($queryBuilder);
+        $body = '{"type": "' . $type . '", "value": ' . $value . '"}';
 
         //prepare headers
         $headers = array (
@@ -118,14 +119,9 @@ class InboundRoutesController {
             'content-type'  => 'application/json; charset=utf-8'
         );
 
-        //prepare API request
-        $request = Unirest::put($queryUrl, $headers, $type);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
         //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('PUT',
+            $queryUrl, $headers, $body);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {

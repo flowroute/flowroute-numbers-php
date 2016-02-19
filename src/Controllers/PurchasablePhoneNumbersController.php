@@ -70,14 +70,8 @@ class PurchasablePhoneNumbersController {
             'Accept'        => 'application/json'
         );
 
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('GET',
+            $queryUrl, $headers);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -122,14 +116,8 @@ class PurchasablePhoneNumbersController {
             'Accept'        => 'application/json'
         );
 
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('GET',
+            $queryUrl, $headers);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -192,14 +180,8 @@ class PurchasablePhoneNumbersController {
             'Accept'        => 'application/json'
         );
 
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('GET',
+            $queryUrl, $headers);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {

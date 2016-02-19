@@ -22,20 +22,11 @@ class CustomAuthUtility {
         $headers=array(),
         $body='')
     {
-        // TODO: Add your custom authentication here
-		// The following properties are available to use
-		//     Configuration::$username
-		//     Configuration::$password
-		// 
-		// ie. Add a header through:
-		//     $request.headers(array("key" => "value"));
 
-        print_r($query_url);
         if (!isset($query_url)) { $query_url = Configuration::$BASEURI; }
-        $timestamp = date('Y-m-d\TH:i:s');
+        $timestamp = gmdate('Y-m-d\TH:i:s');
         $headers['X-Timestamp'] = $timestamp;
         $parsedurl = parse_url($query_url);
-        print_r($parsedurl);
         if (strlen($body) > 0) {
             $body_md5 = md5($body);
         } else {
@@ -50,14 +41,11 @@ class CustomAuthUtility {
         }
         
         $canonicalUri = $parsedurl['scheme'] . '://' . $parsedurl['host'] . $parsedurl['path'] . PHP_EOL . $qp;
-        print_r($canonicalUri);
-        $message_string = $timestamp . PHP_EOL . $method . PHP_EOL . $body_md5 . PHP_EOL . $canonicalUri;
+        $message_string = $timestamp . PHP_EOL;
+        $message_string .= $method . PHP_EOL;
+        $message_string .= $body_md5 . PHP_EOL . $canonicalUri;
         $message_string = utf8_encode($message_string);
         $signature = hash_hmac('sha1', $message_string, Configuration::$password);
-        print_r($signature);
-
-        // Prepare the unirest request
-        //Unirest::auth(Configuration::$username, $signature);
 
         print "Generating the request" . PHP_EOL;
         switch (strtoupper($method)) {
@@ -82,8 +70,6 @@ class CustomAuthUtility {
         }
         
         // Process the response
-        print_r($request);
-        print "Processing the request" . PHP_EOL;
         $response = Unirest::getResponse($request);
         return $response;
     }
