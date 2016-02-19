@@ -63,14 +63,8 @@ class TelephoneNumbersController {
             'user-agent'     => 'Flowroute SDK 1.0'
         );
 
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('GET',
+            $queryUrl, $headers);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -117,14 +111,8 @@ class TelephoneNumbersController {
             'content-type'  => 'application/json; charset=utf-8'
         );
 
-        //prepare API request
-        $request = Unirest::put($queryUrl, $headers, json_encode($billing));
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('PUT',
+            $queryUrl, $headers, json_encode($billing));
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -175,14 +163,8 @@ class TelephoneNumbersController {
             'Accept'        => 'application/json'
         );
 
-        //prepare API request
-        $request = Unirest::get($queryUrl, $headers);
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('GET',
+            $queryUrl, $headers);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -229,14 +211,8 @@ class TelephoneNumbersController {
             'content-type'  => 'application/json; charset=utf-8'
         );
 
-        //prepare API request
-        $request = Unirest::patch($queryUrl, $headers, json_encode($routes));
-
-        //append custom auth authorization headers
-        CustomAuthUtility::appendCustomAuthParams($request);
-
-        //and invoke the API call request to fetch the response
-        $response = Unirest::getResponse($request);
+        $response = CustomAuthUtility::appendCustomAuthParams('PATCH',
+            $queryUrl, $headers, json_encode($routes));
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
