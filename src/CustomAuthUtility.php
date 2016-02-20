@@ -55,7 +55,6 @@ class CustomAuthUtility {
                 break;
             case 'PUT':
                 $request = Unirest::put($query_url, $headers, $body, Configuration::$username, $signature);
-                print_r($request);
                 break;
             case 'PATCH':
                 $request = Unirest::patch($query_url, $headers, $body, Configuration::$username, $signature);
