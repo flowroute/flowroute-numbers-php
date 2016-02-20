@@ -34,8 +34,7 @@ class CustomAuthUtility {
         }
         if (isset($parsedurl['query'])) {
             parse_str($parsedurl['query'], $qparray);
-            $qp = natsort($qparray);
-            $qp = http_build_query($qp);
+            $qp = http_build_query($qparray);
         } else {
             $qp = '';
         }
@@ -47,7 +46,6 @@ class CustomAuthUtility {
         $message_string = utf8_encode($message_string);
         $signature = hash_hmac('sha1', $message_string, Configuration::$password);
 
-        print "Generating the request" . PHP_EOL;
         switch (strtoupper($method)) {
             case 'GET':
                 $request = Unirest::get($query_url, $headers, NULL, Configuration::$username, $signature);
