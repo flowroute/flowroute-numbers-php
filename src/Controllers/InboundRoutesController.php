@@ -111,7 +111,7 @@ class InboundRoutesController {
 
         //validate and preprocess url
         $queryUrl = APIHelper::cleanUrl($queryBuilder);
-        $body = '{"type": "' . $type . '", "value": ' . $value . '"}';
+        $body = '{"type": "' . $type . '", "value": "' . $value . '"}';
 
         //prepare headers
         $headers = array (
