@@ -51,16 +51,17 @@ class CustomAuthUtility {
                 $request = Unirest::get($query_url, $headers, NULL, Configuration::$username, $signature);
                 break;
             case 'POST':
-                $request = Unirest::post($query_url, $headers, $body_md5, Configuration::$username, $signature);
+                $request = Unirest::post($query_url, $headers, $body, Configuration::$username, $signature);
                 break;
             case 'PUT':
-                $request = Unirest::put($query_url, $headers, $body_md5, Configuration::$username, $signature);
+                $request = Unirest::put($query_url, $headers, $body, Configuration::$username, $signature);
+                print_r($request);
                 break;
             case 'PATCH':
-                $request = Unirest::patch($query_url, $headers, $body_md5, Configuration::$username, $signature);
+                $request = Unirest::patch($query_url, $headers, $body, Configuration::$username, $signature);
                 break;
             case 'DELETE':
-                $request = Unirest::delete($query_url, $headers, $body_md5, Configuration::$username, $signature);
+                $request = Unirest::delete($query_url, $headers, $body, Configuration::$username, $signature);
                 break;
             default:
                 trigger_error("Invalid method supplied.", E_USER_ERROR);
