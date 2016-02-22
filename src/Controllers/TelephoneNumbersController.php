@@ -112,7 +112,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
-            $queryUrl, $headers, json_encode($billing));
+            $queryUrl, $headers, ($billing));
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -212,7 +212,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('PATCH',
-            $queryUrl, $headers, json_encode($routes));
+            $queryUrl, $headers, $routes);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
