@@ -39,7 +39,7 @@ The following shows how to import the SDK and setup your API credentials.
 	use FlowrouteNumbersLib\Models\BillingMethod;
 	use FlowrouteNumbersLib\Models\Route;
    
-3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/beta/).
+3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/api/).
  > If you do not have an API Key contact support@flowroute.com:
 
 	$AccessKey = 'AccessKey';
