@@ -114,6 +114,8 @@ class TelephoneNumbersController {
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
             $queryUrl, $headers, ($billing));
 
+        print_r($response);
+
         //Error handling using HTTP status codes
         if ($response->code == 400) {
             throw new APIException('USER ERROR', 400, $response->body);
