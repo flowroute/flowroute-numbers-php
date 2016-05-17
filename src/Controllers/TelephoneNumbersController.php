@@ -31,7 +31,7 @@ class TelephoneNumbersController {
     /**
      * Constructor with authentication and configuration parameters
      */
-    function __construct($username, $password)
+    function __construct($username=null, $password=null)
     {
         $this->username = $username ? $username : Configuration::$username;
         $this->password = $password ? $password : Configuration::$password;
@@ -113,6 +113,8 @@ class TelephoneNumbersController {
 
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
             $queryUrl, $headers, ($billing));
+
+        print_r($response);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {

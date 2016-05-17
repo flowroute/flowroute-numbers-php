@@ -18,7 +18,7 @@ The full documentation for Flowroute's v1 API is available at [Developer.flowrou
 We are using composer to manage the dependencies for the SDK and have already included a composer.json file for you. If you do not already have composer setup, please look at [Composer's Getting Started](https://getcomposer.org/doc/00-intro.md) article. Once you have composer setup, run the following command:
 
 	cd flowroute-numbers-php/
-	composer.phar install
+	php composer.phar install
 
 > Note: You will need to be connected to the internet in order to install the required packages
   
@@ -39,18 +39,12 @@ The following shows how to import the SDK and setup your API credentials.
 	use FlowrouteNumbersLib\Models\BillingMethod;
 	use FlowrouteNumbersLib\Models\Route;
    
-3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/api/).
+3) Configure your API Username and Password from [Flowroute Manager](https://manage.flowroute.com/accounts/preferences/api/) in src/Configuration.php.
  > If you do not have an API Key contact support@flowroute.com:
 
-	$AccessKey = 'AccessKey';
-	$SecretKey = 'SecretKey';
+	16 public static $username = 'AccessKey';
+	20 public static $password = 'SecretKey';
 	
-	$irc = new InboundRoutesController($AccessKey,$SecretKey);
-	$pnc = new PurchasablePhoneNumbersController($AccessKey,$SecretKey);
-	$tnc = new TelephoneNumbersController($AccessKey,$SecretKey);
-
-		
-> If you do not want to assign variable names to the controllers and pass your credentials to each controller, you can just hard code the credentials in Configuration.php and call each controller by its full name.
 
 ## List of Methods and Example Uses
 

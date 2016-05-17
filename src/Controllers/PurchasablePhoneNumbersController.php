@@ -31,7 +31,7 @@ class PurchasablePhoneNumbersController {
     /**
      * Constructor with authentication and configuration parameters
      */
-    function __construct($username, $password)
+    function __construct($username=null, $password=null)
     {
         $this->username = $username ? $username : Configuration::$username;
         $this->password = $password ? $password : Configuration::$password;
