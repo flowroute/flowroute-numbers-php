@@ -96,7 +96,7 @@ The search method is the most robust option for searching through Flowroute's pu
 
 ##### Example Usage
 
-	$response = $pnc->search(10,206,641,null,seattle,wa,null);
+	$response = $pnc->search(10, 206, 641, null, "seattle", "wa", null);
 	print_r($response);
 	
 ### TelephoneNumbersController
@@ -118,7 +118,7 @@ The purchase method is used to purchase a telephone number from Flowroute's inve
 	$response = $tnc->purchase($billing, '12094350424');
 	print_r($response);
 
-> If your query is succesful you will be returned an empty string and a 201 Created
+> If your query is successful you will be returned an empty string and a 201 Created
 
 #### listAccountTelephoneNumbers ($limit = NULL,$page = NULL,$pattern = NULL)
 
@@ -132,7 +132,7 @@ The listAccountTelephoneNumbers method is used to retrieve a list of all of the 
 
 ##### Example Usage
 	
-	$response = $tnc->listAccountTelephoneNumbers(1,null,1206);
+	$response = $tnc->listAccountTelephoneNumbers(1, null, 1206);
 	print_r($response);
 
 #### telephoneNumberDetails ($telephoneNumber) 
@@ -160,7 +160,7 @@ The update method is used to update both the primary and failover route for a ph
 ##### Example Usage
 	
 	$rtes = '{"routes": [{"name": "ea4f4056663e27b082999689982e4771"}, {"name": "5ec40d37d10ae11fe5690c0b00f6a903"}]}'; 
-	$response = $tnc->update('12064205780',$rtes);
+	$response = $tnc->update('12064205780', $rtes);
 	print_r($response);
 	
 > A list of all available route names can be found by using the mlist function in the InboundRoutesController.
@@ -180,7 +180,7 @@ The list method is used to return all of the existing inbound routes from your F
 
 ##### Example Usage
 
-	$response = $irc->mlist(10,null);
+	$response = $irc->mlist(10, null);
 	print_r($response);
 	
 #### createNewRoute ($routeName,$type,$value) 
@@ -190,16 +190,16 @@ The createNewRoute method is used to create a new inbound route.
 | Parameter | Required | Usage                                                                                   |
 |-----------|----------|-----------------------------------------------------------------------------------------|
 | route_name | True     | The name you would like to assign to the new route (supports alphanumeric characters)   |
-| mtype      | True     | The type of route you would like to create. Valid options are "HOST", "PSTN", and "URI" |
+| type      | True     | The type of route you would like to create. Valid options are "HOST", "PSTN", and "URI" |
 | value     | True     | The actual route that you would like to create                                          |
 
 ##### Example Usage
 
-	$response = $irc->createNewRoute('PSTNroute1','PSTN','19513232211');
+	$response = $irc->createNewRoute('PSTNroute1', 'PSTN', '19513232211');
 	print_r($response);
 	
-	$response = $irc->createNewRoute('HOSTroute1','HOST','4.239.23.40:5060');
+	$response = $irc->createNewRoute('HOSTroute1', 'HOST', '4.239.23.40:5060');
 	print_r($response);
 	
-	$response = $irc->createNewRoute('URIroute1','URI','sip:120664480000@215.122.69.152:5060');
+	$response = $irc->createNewRoute('URIroute1', 'URI', 'sip:120664480000@215.122.69.152:5060');
 	print_r($response);

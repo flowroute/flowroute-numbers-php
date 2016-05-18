@@ -2,7 +2,7 @@
 /*
  * FlowrouteNumbersLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
+ * Copyright Flowroute, Inc. 2016
  */
 
 namespace FlowrouteNumbersLib\Controllers;
@@ -12,6 +12,7 @@ use FlowrouteNumbersLib\APIHelper;
 use FlowrouteNumbersLib\Configuration;
 use FlowrouteNumbersLib\CustomAuthUtility;
 use Unirest\Unirest;
+
 class TelephoneNumbersController {
 
     /* private fields for configuration */
@@ -40,7 +41,9 @@ class TelephoneNumbersController {
     /**
      * Returns the routing and billing information for the specified telephone number on your account
      * @param  string     $telephoneNumber      Required parameter: This is the TN for which you would like to retrieve configuration details for
-     * @return string response from the API call*/
+     * @return string response from the API call
+     * @throws APIException
+     **/
     public function telephoneNumberDetails (
                 $telephoneNumber) 
     {
@@ -84,9 +87,11 @@ class TelephoneNumbersController {
         
     /**
      * Purchases the telephone number indicated by the request URI, with the billing method indicated in the body. Allowable billing methods are returned in the search results for available telephone numbers.
-     * @param  BillingMethod     $billing     Required parameter: The billing method to apply to the telephone number being purchased.
-     * @param  string            $number      Required parameter: Telephone number to purchase
-     * @return string response from the API call*/
+     * @param  string     $billing     Required parameter: JSON representing the billing method to apply to the telephone number being purchased.
+     * @param  string     $number      Required parameter: Telephone number to purchase
+     * @return string response from the API call
+     * @throws APIException
+     **/
     public function purchase (
                 $billing,
                 $number) 
@@ -137,7 +142,9 @@ class TelephoneNumbersController {
      * @param  int|null        $limit       Optional parameter: Number of items to display (max 200)
      * @param  int|null        $page        Optional parameter: Page to display
      * @param  string|null     $pattern     Optional parameter: A full or partial telephone number to search for
-     * @return mixed response from the API call*/
+     * @return mixed response from the API call
+     * @throws APIException
+     **/
     public function listAccountTelephoneNumbers (
                 $limit = NULL,
                 $page = NULL,
@@ -188,7 +195,9 @@ class TelephoneNumbersController {
      * Updates the routing information for a telephone number on your account, as indicated by the specified URI. The body of the request requires two routes listed in order of preference (primary first and fail over second).
      * @param  string     $number     Required parameter: The telephone number who's routing you wish to update
      * @param  array      $routes     Required parameter: JSON string containing the The routes obtained from the routes resource that you would like to point your telephone number to.
-     * @return string response from the API call*/
+     * @return string response from the API call
+     * @throws APIException
+     **/
     public function update (
                 $number,
                 $routes) 

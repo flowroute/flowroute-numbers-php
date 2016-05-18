@@ -2,7 +2,7 @@
 /*
  * FlowrouteNumbersLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
+ * Copyright Flowroute, Inc.  2016
  */
 
 namespace FlowrouteNumbersLib\Models;
@@ -18,20 +18,18 @@ class BillingMethod implements JsonSerializable {
 
     /**
      * Constructor to set initial or default values of member properties
-	 * @param   string            $billingMethod    Initialization value for the property $this->billingMethod 
+	 * @param   string  $method    Initialization value for the property $this->billingMethod
      */
-    public function __construct()
+    public function __construct($method=null)
     {
-        if(1 == func_num_args())
-        {
-            $this->billingMethod  = func_get_arg(0);
-        }
+        $this->billingMethod  = $method;
     }
 
     /**
      * Return a property of the response if it exists.
      * Possibilities include: code, raw_body, headers, body (if the response is json-decodable)
-     * @return mixed
+     * @param   string  $property   name of the property to return information about  
+     * @return mixed or null if property not found
      */
     public function __get($property)
     {
@@ -45,12 +43,14 @@ class BillingMethod implements JsonSerializable {
                 return $value;
             }
         }
+        return null;
     }
     
     /**
      * Set the properties of this object
      * @param string $property the property name
      * @param mixed $value the property value
+     * @return mixed - updated BillingMethod instance
      */
     public function __set($property, $value)
     {
