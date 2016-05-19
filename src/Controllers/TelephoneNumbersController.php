@@ -11,6 +11,7 @@ use FlowrouteNumbersLib\APIException;
 use FlowrouteNumbersLib\APIHelper;
 use FlowrouteNumbersLib\Configuration;
 use FlowrouteNumbersLib\CustomAuthUtility;
+use FlowrouteNumbersLib\Models\BillingMethod;
 use Unirest\Unirest;
 
 class TelephoneNumbersController {
@@ -87,9 +88,9 @@ class TelephoneNumbersController {
         
     /**
      * Purchases the telephone number indicated by the request URI, with the billing method indicated in the body. Allowable billing methods are returned in the search results for available telephone numbers.
-     * @param  string     $billing     Required parameter: JSON representing the billing method to apply to the telephone number being purchased.
-     * @param  string     $number      Required parameter: Telephone number to purchase
-     * @return string response from the API call
+     * @param  BillingMethod    $billing     Required parameter: JSON representing the billing method to apply to the telephone number being purchased.
+     * @param  string           $number      Required parameter: Telephone number to purchase
+     * @return string           response from the API call
      * @throws APIException
      **/
     public function purchase (
@@ -117,7 +118,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
-            $queryUrl, $headers, ($billing));
+            $queryUrl, $headers, $billing->jsonSerialize());
 
         print_r($response);
 

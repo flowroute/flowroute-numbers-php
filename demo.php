@@ -12,6 +12,7 @@ use FlowrouteNumbersLib\Controllers\InboundRoutesController;
 use FlowrouteNumbersLib\Controllers\PurchasablePhoneNumbersController;
 use FlowrouteNumbersLib\Controllers\TelephoneNumbersController;
 use FlowrouteNumbersLib\APIException;
+use FlowrouteNumbersLib\Models\BillingMethod;
 
 print "Number Control Demo." . PHP_EOL;
 
@@ -41,8 +42,9 @@ $tnc = new TelephoneNumbersController();
 
 // Purchase a Phone Number
 print("--Purchase a Phone Number\n");
-$billing = '{"billing_method": "METERED"}';
-$number = '12066417659';
+$billing = new BillingMethod('METERED');
+
+$number = '12066417661';
 
 try {
     $response = $tnc->purchase($billing, $number);

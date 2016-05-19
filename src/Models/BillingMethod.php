@@ -69,11 +69,13 @@ class BillingMethod implements JsonSerializable {
 
     /**
      * Encode this object to JSON
+     * @return string json encoded string for the billing method
+     *    '{"billing_method" : "METERED"}'
      */
     public function jsonSerialize()
     {
         $json = array();
         $json['billing_method'] = $this->billingMethod;
-        return $json;
+        return json_encode($json);
     }
 }
