@@ -2,7 +2,7 @@
 /*
  * FlowrouteNumbersLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
+ * Copyright Flowroute, Inc. 2016
  */
 
 namespace FlowrouteNumbersLib\Controllers;
@@ -12,6 +12,7 @@ use FlowrouteNumbersLib\APIHelper;
 use FlowrouteNumbersLib\Configuration;
 use FlowrouteNumbersLib\CustomAuthUtility;
 use Unirest\Unirest;
+
 class PurchasablePhoneNumbersController {
 
     /* private fields for configuration */
@@ -42,7 +43,9 @@ class PurchasablePhoneNumbersController {
      * @param  int|null     $limit     Optional parameter: Number of items to display (Max 200)
      * @param  int|null     $npa       Optional parameter: Restricts the results to this NPA.
      * @param  int|null     $page      Optional parameter: Page to display
-     * @return mixed response from the API call*/
+     * @return mixed response from the API call
+     * @throws APIException
+     **/
     public function listAreaAndExchange (
                 $limit = NULL,
                 $npa = NULL,
@@ -92,7 +95,9 @@ class PurchasablePhoneNumbersController {
     /**
      * Retrieves a list of all NPAs (area codes) that contain purchasable telephone numbers.
      * @param  int     $limit     Required parameter: Number of items to display (Max 200).
-     * @return mixed response from the API call*/
+     * @return mixed response from the API call
+     * @throws APIException
+     **/
     public function listAvailableNPAs (
                 $limit) 
     {
@@ -136,7 +141,7 @@ class PurchasablePhoneNumbersController {
     }
         
     /**
-     * TODO: type endpoint description here
+     * Search for phone numbers by a Numbering Plan Area (NPA), Numbering Plan Area and Exchange (NPA-NXX), State, or rate center.
      * @param  int|null        $limit          Optional parameter: Number of items to display (Max 200)
      * @param  int|null        $npa            Optional parameter: Restricts the results to the three digit NPA (area code) specified. This is optional, unless NXX is present
      * @param  int|null        $nxx            Optional parameter: Restricts the results to the three digit NXX (exchange) specified.
@@ -144,7 +149,9 @@ class PurchasablePhoneNumbersController {
      * @param  string|null     $ratecenter     Optional parameter: Restricts the results to the ratecenter specified. If present, state is required
      * @param  string|null     $state          Optional parameter: Restricts the results to the state specified. This is optional, unless ratecenter is present.
      * @param  string|null     $tn             Optional parameter: Restricts the results to the telephone number specified.
-     * @return mixed response from the API call*/
+     * @return mixed response from the API call
+     * @throws APIException
+     **/
     public function search (
                 $limit = NULL,
                 $npa = NULL,

@@ -2,19 +2,20 @@
 /*
  * FlowrouteNumbersLib
  *
- * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
+ * Copyright Flowroute, Inc. 2016
  */
 
 namespace FlowrouteNumbersLib;
-use FlowrouteNumbersLib\APIException;
-use FlowrouteNumbersLib\APIHelper;
-use FlowrouteNumbersLib\Configuration;
 use Unirest\Unirest;
 
 class CustomAuthUtility {
     /**
     * Appends the necessary Custom Authentication credentials for making this authorized call
-    * @param HttpRequest $request The out going request to access the resource
+    * @param    string  $method     The out going request to access the resource
+    * @param    string  $query_url  The url to send the query to
+    * @param    array   $headers    Header array to send in the request
+    * @param    string  $body       Message body to send
+    * @return   response from HTTP request
     */
     public static function appendCustomAuthParams(
         $method = 'GET',
