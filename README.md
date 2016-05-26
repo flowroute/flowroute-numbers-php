@@ -123,11 +123,11 @@ The following describes importing the SDK and setting up your API credentials. I
 
 This SDK describes the following Controllers:
 
-<li>[`PurchasablePhoneNumbersController`](#purchaseno)
+*	[`PurchasablePhoneNumbersController`](#purchaseno)
 
-<li>[`TelephoneNumbersController`](#telephoneno)
+*	[`TelephoneNumbersController`](#telephoneno)
 
-<li>[`InboundRoutesController`](#inboundco) 
+*	[`InboundRoutesController`](#inboundco) 
 
 When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null)` method can be formatted as `listAreaAndExchange (10,206,3)` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
 
@@ -148,7 +148,7 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 
 You can then add lines for each of the following PurchasePhoneNumbersController methods and comment out each line as needed, or create unique files for each of the following methods:
 
-*	[`listAvailableNPAs()]`(#listnpa)
+*	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
 * 	[`search()`](#searchno)
 
@@ -286,7 +286,7 @@ The method supports the following parameters:
 | `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
 | `ratecenter` | False |string             | Limits the results to the specified ratecenter.  There is no limit on the number of characters that can be passed, and this field is case-insensitive. |                      |
 | `state`      | False, unless `ratecenter` is passed, then `True`.|string | Limits results to the specified state or Canadian province. Must be formatted using the two-letter state or province/territory abbreviation. This field is case-insensitive.                           |
-| `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPNXXXXXX`*.  |
+| `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPAXXXXXX`*.  |
 
 ##### Example Usage
 
@@ -500,7 +500,7 @@ Parameter | Description                                             |
 | `tns`  | Object composed of a `telephone number`, `billing_method`, and `routes`.|                           
 ||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
-| |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) endpoint.|
+| |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
 
 #### `telephoneNumberDetails($Number)`<a name=phonedetails></a>
@@ -595,6 +595,11 @@ No confirmation message is returned for a successful update. To view the route c
 
 The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes.
 
+The Controller supports the following methods:
+
+*	[`mlist`](#listroutes)
+* 	[`createNewRoute`](#createroute)
+
 #### `mlist ($limit = NULL,$page = NULL)`<a name=listroutes></a>
 
 The list method is used to return all of the existing inbound routes from your Flowroute account.
@@ -655,19 +660,30 @@ These routes can be applied to any of your purchased phone numbers using the [`u
 
 #### `createNewRoute ($routeName,$type,$value)`<a name=createroute></a>
  
-The createNewRoute method is used to create a new inbound route.
+The `createNewRoute` method is used to create a new inbound route.
 
-| Parameter | Required | Usage                                                                                   |
-|-----------|----------|-----------------------------------------------------------------------------------------|
-| route_name | True     | The name you would like to assign to the new route (supports alphanumeric characters)   |
-| mtype      | True     | The type of route you would like to create. Valid options are "HOST", "PSTN", and "URI" |
-| value     | True     | The actual route that you would like to create                                          |
+#####Usage
+
+	$response = $irc->createNewRoute('routeName','type','value');
+	print_r($response)
+
+>**Important:** `$response` is a variable that can be assigned any name of you choose, and of any length; however, the name you choose you must use consistently in the method.
+
+The method takes the following parameters:
+
+| Parameter | Required | Type| Usage                                                                        |
+|-----------|----------|------|-----------------------------------------------------------------------------|
+| `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted charactters.  |
+| `type`      | True   |  string |The type of route you would like to create. Valid options are `HOST`, `PSTN`, and `URI`. |
+| `value`     | True    |string | Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>                                           |
 
 ##### Example Usage
 
-	$response = $irc->createNewRoute('PSTNroute1','PSTN','19513232211');
+You can pass as many `createNewRoute` methods in a single operation. The following example creates new PSTN, HOST, and URI routes:
+
+	$response = $irc->createNewRoute('PSTNroute2','PSTN','12066417848');
 	print_r($response);
-	$response = $irc->createNewRoute('HOSTroute1','HOST','4.239.23.40:5060');
+	$response = $irc->createNewRoute('HOSTroute2','HOST','4.239.23.40:5060');
 	print_r($response);
-	$response = $irc->createNewRoute('URIroute1','URI','sip:120664480000@215.122.69.152:5060');
+	$response = $irc->createNewRoute('URIroute2','URI','sip:12066417848@215.122.69.152:5060');
 	print_r($response);
