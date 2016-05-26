@@ -1,7 +1,5 @@
 # flowroute-numbers-php
 
-## What is it?
-
 **Flowroute-numbers-php** is a php API Wrapper that provides methods for interacting with **v1** (version 1) of the[Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
 
 * Search for purchasable phone numbers
@@ -27,7 +25,7 @@ To create and send a message, you will need your Flowroute phone number, which s
 
 ###Download Composer
 
-Composer is used to manage the dependencies for the PHP SDK. This SDK does not cover those steps. See Composer's [Getting Started](https://getcomposer.org/doc/00-intro.md) guide at the Composer web site for the steps to download the setup file. Download, but do not install, Composer-setup.phar. Only after installing the libraries do you install Composer.
+Composer is used to manage the dependencies for the PHP SDK. The Composer installation file, **composer.phar**, can be downloaded from Composer's web site [here](https://getcomposer.org/download). Download, but do not install it; only after first installing the libraries will you install Composer.
 
 ## Install the libraries
 
@@ -47,7 +45,7 @@ Composer is used to manage the dependencies for the PHP SDK. This SDK does not c
 
 ##Install Composer
 
-1.	Move the downloaded **composer.phar** and **composer-setup.php** files to the **flowroute-numbers-php** directory.
+1.	Move the downloaded **composer.phar** file to the **flowroute-numbers-php** directory.
 
 	>**Note:** **composer.phar** must be in the **flowroute-numbers-php** directory in order to install correctly. Composer requires a **composer.json** file, which is included in the imported SDK to help manage dependencies.
 
@@ -59,7 +57,7 @@ Composer is used to manage the dependencies for the PHP SDK. This SDK does not c
   
 ## Create a PHP file to import the Controllers and Models
 
-The following shows how to import the SDK and set up your API credentials. Importing the SDK allows you to instantiate the Controllers, which contains the methods used to perform tasks with the SDK. In order to do this, a PHP file is required. 
+The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
 
 1. Using a code text editor — for example, *Sublime Text* — create a new file and add the following lines to import the Controllers and Methods:
 
@@ -89,10 +87,11 @@ The following shows how to import the SDK and set up your API credentials. Impor
 
 5.	From your **flowroute-numbers-php** folder change directories to **src**. 
 
-6.	Using a text editor, open **Configuration.php**. 
+6.	Using a code text editor, open **Configuration.php**. 
 
-7.	In **Configure.php** replace AccessKey and SecretKey with your Flowroute API credentials. The file should resemble the following:
+7.	In **Configure.php** replace the AccessKey and SecretKey variables with your Flowroute API credentials. The file should resemble the following:
 
+	```sh
 		<?php
 		/*
 		 * FlowrouteNumbersLib
@@ -114,18 +113,28 @@ The following shows how to import the SDK and set up your API credentials. Impor
 			//TODO: Replace the $password with an appropriate value
 			public static $password = 'm8axLA45yds7kmiC88aOQ9d5caADg6vr';
 		}
+```
+
 8.	Save the file.
 
 	The Controllers point automatically to **Configuration.php**, so there is no need to do anything else with this file.
 	
-## List of Methods and Example Uses
+## Controllers<a name=controllers></a>
+
+When using a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null)` method can be formatted as `listAreaAndExchange (10,206,3)` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
+
+This SDK describes the following Controllers:
+
+<li>[PurchasablePhoneNumbersController](#purchaseno)
+
+<li>[TelephoneNumbersController](#telephoneno)
+
+<li>[InboundController](#inboundco) 
 
 
-### PurchasablePhoneNumbersController
+### PurchasablePhoneNumbersController<a name=purhcaseno></a>
 
-The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. 
-
-Methods must be added to a PHP file and that file run from a command line. For example, you can create a`php purchase.php` contains the following information:
+The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **purchase.php** file contains the following information:
 
 	<?php
 
@@ -139,32 +148,37 @@ Methods must be added to a PHP file and that file run from a command line. For e
 
 You can then add lines for each of the following PurchasePhoneNumbersController methods and comment out each line as needed, or create unique files for each of the following methods:
 
-*	[listAvailableNPAs](#listnpa)
-* 	[listAreaAndExchange](#listnpanxx)
-* 	[search](#searchno)
+*	[listAvailableNPAs()](#listnpa)
+* 	[listAreaAndExchange()](#listnpanxx)
+* 	[search()](#searchno)
 
+You can run the file on the command line using the `php <PHP file>` command.
 
-#### `listAvailableNPAs ($limit)`<a name=listnpa></a>
-
-#####Usage
-Add the following lines to your PHP file and run.
-
-	$response = $pnc->listAvailableNPAs($limit=null);
-	print_r($response);`
+#### `listAvailableNPAs ($limit=null)`<a name=listnpa></a>
 
 The `listAvailableNPAs` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
+#####Usage
 
-| Parameter | Required | Usage                                 |
-|-----------|----------|---------------------------------------|
-| limit     | False    | Controls the number of items returned. The maximum number of items is 200. If no number is passed, `null` is passed, which returns all NPAs. |
+Add the following lines to your PHP file.
+
+	$response = $pnc->listAvailableNPAs();
+	print_r($response);`
+
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+
+The method can take the following parameter:
+
+| Parameter | Required |Type |Usage                           |
+|-----------|----------|-----|--------------------------------|
+| `limit`     | False  |integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPAs are returned. |
 
 ##### Example usage
 	
-	$response = $pnc->listAvailableNPAs($limit=3);
+	$response = $pnc->listAvailableNPAs(3);
 	print_r($response);
 
 #####Example response
-For the response where a limit of 3 is passed, the first three NPAs are returned:
+For the response where a `limit` of `3` is passed, the first three NPAs are returned:
 
 ```sh
 (
@@ -196,24 +210,31 @@ For the response where a limit of 3 is passed, the first three NPAs are returned
         )
 ```
 
-#### `listAreaAndExchange ($limit,$npa,$page)`<a name=listnpanxx></a>
-
-#####Usage
-	listAreaAndExchange ($limit=null,$npa=null,$page=null)
+#### `listAreaAndExchange ($limit=null,$npa=null,$page=null)`<a name=listnpanxx></a>
 
 The `listAreaAndExchange` method allows you to retrieve a list of every NPA-NXX (area code and exchange) available in Flowroute's phone number inventory.
 
-| Parameter | Required | Usage                                                         |
-|-----------|----------|---------------------------------------------------------------|
-| limit     | False    |  Controls the number of items returned. The maximum number of items is 200. If no number is passed, `null` is passed, which returns all NPA NXX combinations.                        |
-| npa       | False    | Limits results to the specified NPA. If `null` is passed, all NPAs are returned.|
-| page      | False    | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
+#####Usage
+Add the following lines to your PHP file:
+	
+	$response = $pnc->listAreaAndExchange ()
+	print_r($response)
+
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+	
+The method takes the following parameters:
+
+| Parameter | Required |Type| Usage                                                         |
+|-----------|----------|--------------|-------------------------------------------------|
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPA-NXX combinations are returned.                 |
+| `npa`       | False  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
+| `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
 
 ##### Example usage
 
-In the following, a request is made to return only `2` results on page `3` for NPA `203`:
+In the following, a request is made to limit the results to `2`, the NPA to `203` and to display page `3`:
 		
-	$response = $pnc->listAreaAndExchange($limit=2,$npa=203,$page=3);
+	$response = $pnc->listAreaAndExchange(2,203,2);
 	print_r($response);
 	
 #####Example response
@@ -247,22 +268,107 @@ Based on the example usage above, the following two NPA NXX combinations are ret
 
 The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and TN.
 
-| Parameter  | Required                       | Usage                                                                     |
-|------------|--------------------------------|--------------------------------------------------------|
-| limit      | False                          | Controls the number of items returned (Max 200)                                     |
-| npa        | False, unless nxx is present   | Limits results to the specified NPA (also known as area code)             |
-| nxx        | False                          | Limits results to the specified NXX (also known as exchange)              |
-| page       | False                          | Determines which page of the results is returned                          |
-| ratecenter | False                          | Limits results to the specified ratecenter                                |
-| state      | False, unless state is present | Limits results to the specified state                                     |
-| tn         | False                          | Limits results to the specified telephone number (supports prefix search) |
+#####Usage
+Add the following lines to your PHP file:
+
+	$response = $pnc->search();
+	print_r($response)
+
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+
+The method supports the following parameters:
+
+| Parameter  | Required|   Type|          Usage                                         |
+|------------|----------|------|--------------------------------------------------------|
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPA NXX combinations are returned.                      |
+| `npa`       | False, unless `nxx` is passed, then `True`.  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
+| `nxx`       |False  | integer |Three-digit exchange. Limits the results for the specified NXX. If no `nxx` is passed, `null` is used and all results are returned. Partial search is supported. For example, passing `'45'` for the `nxx` returns exchanges that include `45`. Note that if you pass an `nxx` you must also pass an `npa`. Partial search is supported on both fields. |
+| `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
+| `ratecenter` | False |string             | Limits the results to the specified ratecenter.  This field is case-insensitive. |                      |
+| `state`      | False, unless `ratecenter` is passed, then `True`.|string | Limits results to the specified state or Canadian province. Must be formatted using the two-letter state or province/territory abbreviation. This field is case-insensitive.                           |
+| `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPNXXXXXX`*.  |
 
 ##### Example Usage
 
-	$response = $pnc->search(10,206,641,null,seattle,wa,null);
+In the following example, a search request sets the `limit` to `3`, `206` for the `npa`, `641` for the `nxx`, `2` for the `page`, `seattle` for the `ratecenter`, `wa` for the `state`, and `null` for the `tn`.
+
+	$response = $pnc->search(3,206,641,2,seattle,wa,null);
 	print_r($response);
 	
-### TelephoneNumbersController
+#####Response
+Based on the passed parameters for the `search()`, the response returns three results:
+
+```sh
+(
+    [tns] => stdClass Object
+        (
+            [12066417848] => stdClass Object
+                (
+                    [initial_cost] => 1.00
+                    [monthly_cost] => 1.25
+                    [billing_methods] => Array
+                        (
+                            [0] => VPRI
+                            [1] => METERED
+                        )
+
+                    [ratecenter] => SEATTLE
+                    [state] => WA
+                )
+
+            [12066417632] => stdClass Object
+                (
+                    [initial_cost] => 1.00
+                    [monthly_cost] => 1.25
+                    [billing_methods] => Array
+                        (
+                            [0] => VPRI
+                            [1] => METERED
+                        )
+
+                    [ratecenter] => SEATTLE
+                    [state] => WA
+                )
+
+            [12066417664] => stdClass Object
+                (
+                    [initial_cost] => 1.00
+                    [monthly_cost] => 1.25
+                    [billing_methods] => Array
+                        (
+                            [0] => VPRI
+                            [1] => METERED
+                        )
+
+                    [ratecenter] => SEATTLE
+                    [state] => WA
+                )
+
+        )
+
+    [links] => stdClass Object
+        (
+            [next] => /v1/available-tns/tns/?npa=206&nxx=641&state=wa&ratecenter=seattle&limit=3&page=2
+        )
+
+)
+```
+
+#####Response parameter descriptions	
+The following fields are returned in the response:
+
+Parameter | Description                                             |
+|--------|-------------------------------------------------------|
+| `tns`  | Object composed of a `telephone number`, `state`, `ratecenter`, and `billing_methods`.|                           |
+||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
+||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
+| | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
+| |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
+||	`ratecenter`- The ratecenter associated with the NPA/NXX.|
+||	`state`- The US State or Canadian province or territory in which the NPA NXX is located.</ol>|
+
+
+### TelephoneNumbersController<a name=telephoneno></a>
 
 The Telephone Numbers Controller contains all of the methods neccesary to purchase a new phone number and to manage your owned phone number inventory.
 
@@ -328,7 +434,7 @@ The update method is used to update both the primary and failover route for a ph
 	
 > A list of all available route names can be found by using the mlist function in the InboundRoutesController.
 
-### InboundRoutesController
+### InboundRoutesController<a name=inboundco></a>
 
 The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes.
 
