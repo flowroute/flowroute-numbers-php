@@ -75,9 +75,9 @@ If you do not want to use the file, the following sections describe creating you
 
 The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
 
-When creating your own file for running the methods you will need to create one or more files that instantiate the controllers and the methods. The following snippet displays these required lines.
+When creating your own file for running the methods you will need to create one or more files that instantiate the Controllers and the methods. The following shows these lines. Depending on your approach, not all lines will be required
 
-		<?php
+	
 		require_once('vendor/autoload.php');
 	
 		use FlowrouteNumbersLib\Controllers\InboundRoutesController;
@@ -92,14 +92,14 @@ When creating your own file for running the methods you will need to create one 
 		use FlowrouteNumbersLib\Models\BillingMethod;
 		use FlowrouteNumbersLib\Models\Route;
 		
-		?>
- You have a few options for this:
+
+ You can approach the file creation through any of the following methods:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
  
- 2.	Create a unique file for each Controller, adding only those lines relevant to that Controller, and then commenting out the lines for each method you're note using.
+ 2.	Create a unique file for each Controller, adding only those lines relevant to that Controller and related methods, and then commenting out the lines for each method you're not using. You would create three unique Controller files.
  
- 3.	Create a unique file for each method.
+ 3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
 This SDK covers option number 2, creating unique Controller files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
 
@@ -156,7 +156,7 @@ This following sections describe **flowroute-numbers-php** Controllers:
 When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null);` method can be formatted as `listAreaAndExchange (10,206,3);` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
 
 
-### PurchasablePhoneNumbersController<a name=purhcaseno></a>
+### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
 The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **purchase.php** file contains the following information:
 
@@ -171,7 +171,7 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 
 	?>
 
-Add the following PurchasePhoneNumbersController methods between $`pnc = new PurchasablePhoneNumbersController();` and `?> `and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
+Add the following PurchasePhoneNumbersController methods between $`pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -187,7 +187,7 @@ The `listAvailableNPAs` method allows you to retrieve a list of every NPA (area 
 Add the following lines to your PHP file:
 
 	$response = $pnc->listAvailableNPAs();
-	print_r($response);`
+	print_r($response);
 
 >**Note:** `$response` can be any name of you choose, and of any length, but the name you choose must be used consistently in the method.
 
@@ -273,20 +273,16 @@ Based on the example usage above, the following two NPA NXX combinations are ret
                 (
                     [tns] => /v1/available-tns/tns/?npa=203&nxx=583
                 )
-
             [203567] => stdClass Object
                 (
                     [tns] => /v1/available-tns/tns/?npa=203&nxx=567
                 )
-
         )
-
     [links] => stdClass Object
         (
             [prev] => /v1/available-tns/npanxxs/?npa=203&limit=2&page=2
             [next] => /v1/available-tns/npanxxs/?npa=203&limit=2&page=4
         )
-
 )
 ```
 #### `search ($limit = NULL,$npa = NULL,$nxx = NULL,$page = NULL,$ratecenter = NULL,$state = NULL,$tn = NULL)`<a name=searchno></a>
@@ -404,11 +400,10 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 
 Add the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>` and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
 
-<li>[`purchase`](#purchaseno)
-<li>[`listAccountTelephoneNumbers`](#listnumbers)
-<li>[`telephoneNumberDetails`](#phonedetails)
-<li>[`update`](#updateroute)
-</li>
+*	[`purchase`](#purchaseno)
+*	[`listAccountTelephoneNumbers`](#listnumbers)
+*	[`telephoneNumberDetails`](#phonedetails)
+*	[`update`](#updateroute)
 
 #### `purchase ($billing,$number)`<a name=purchaseno></a>
 
