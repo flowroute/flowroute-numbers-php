@@ -1,6 +1,6 @@
 # flowroute-numbers-php
 
-**Flowroute-numbers-php** is a php API Wrapper that provides methods for interacting with **v1** (version 1) of the[Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
+**flowroute-numbers-php** is a php API Wrapper that provides methods for interacting with **v1** (version 1) of the [Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
 
 * Search for purchasable phone numbers
 * Purchase phone numbers
@@ -54,12 +54,28 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 		php composer.phar install
 
  	Composer sets up the required file structure.
-  
+ 	
+## Use demo.php
+
+A Demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials and retrieve information.
+
+>**Note:** Before running the **demo.php** file you will need to configure your API credentials. See [Set up your API credentials](#credentials)
+
+To use **demo.php**, open the file with a code text editor, such as Sublime Text, and modify parameters or comment out lines as needed. For information on the parameters within the file, see the applicable Controller information:
+
+*	[`PurchasablePhoneNumbersController`](#purchaseno)
+
+*	[`TelephoneNumbersController`](#telephoneno)
+
+*	[`InboundRoutesController`](#inboundco) 
+
+If you do not want to use the file, the following sections describe creating your own PHP files.
+
 ## Create a PHP file to import the Controllers and Models
 
 The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
 
-1. Using a code text editor — for example, *Sublime Text* — create a new file and add the following lines to import the Controllers and Methods:
+When creating your own file for running the methods you will need to create one or more files that instantiate the controllers and the methods. The following snippet displays these required lines.
 
 		<?php
 		require_once('vendor/autoload.php');
@@ -67,6 +83,7 @@ The following describes importing the SDK and setting up your API credentials. I
 		use FlowrouteNumbersLib\Controllers\InboundRoutesController;
 		use FlowrouteNumbersLib\Controllers\PurchasablePhoneNumbersController;
 		use FlowrouteNumbersLib\Controllers\TelephoneNumbersController;
+		use FlowrouteNumbersLib\APIException;
 		
 		$irc = new InboundRoutesController();
 		$pnc = new PurchasablePhoneNumbersController();
@@ -76,20 +93,27 @@ The following describes importing the SDK and setting up your API credentials. I
 		use FlowrouteNumbersLib\Models\Route;
 		
 		?>
-   
-3. Save the file in your top-level **flowroute-numbers-php** folder. For this example, the PHP file is named ***import.php***.
+ You have a few options for this:
+ 
+ 1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
+ 
+ 2.	Create a unique file for each Controller, adding only those lines relevant to that Controller, and then commenting out the lines for each method you're note using.
+ 
+ 3.	Create a unique file for each method.
 
-4.	On the command line, run the PHP file you just created. For example,
+This SDK covers option number 2, creating unique Controller files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
 
-		run import.php
+		run <Controller File Name.PHP>
 
-4.	Next, configure your API Access Key and Secret Key.
+Before proceeding, you must first set up your API credentials.
 
-5.	From the **flowroute-numbers-php** directory change directories to **src**. 
+## Set up your API credentials<a name=credentials></a>
 
-6.	Using a code text editor, open **Configuration.php**. 
+1.	From the **flowroute-numbers-php** directory change directories to **src**. 
 
-7.	In **Configure.php** replace the AccessKey and SecretKey variables with your Flowroute API credentials. The file should resemble the following:
+2.	Using a code text editor, open **Configuration.php**.
+
+3.	In **Configure.php** replace the AccessKey and SecretKey variables with your Flowroute API credentials. The file should resemble the following:
 
 	```sh
 		<?php
@@ -115,13 +139,13 @@ The following describes importing the SDK and setting up your API credentials. I
 		}
 ```
 
-8.	Save the file.
+4.	Save the file.
 
 	The Controllers point automatically to **Configuration.php**, so there is no need to do anything else with this file.
 	
 ## Controllers<a name=controllers></a>
 
-This SDK describes the following Controllers:
+This following sections describe **flowroute-numbers-php** Controllers:
 
 *	[`PurchasablePhoneNumbersController`](#purchaseno)
 
@@ -129,7 +153,7 @@ This SDK describes the following Controllers:
 
 *	[`InboundRoutesController`](#inboundco) 
 
-When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null)` method can be formatted as `listAreaAndExchange (10,206,3)` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
+When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null);` method can be formatted as `listAreaAndExchange (10,206,3);` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
 
 
 ### PurchasablePhoneNumbersController<a name=purhcaseno></a>
@@ -141,12 +165,13 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 	require_once('vendor/autoload.php');
 
 	use FlowrouteNumbersLib\Controllers\PurchasablePhoneNumbersController;
+	use FlowrouteNumbersLib\APIException;
 	
 	$pnc = new PurchasablePhoneNumbersController();
 
 	?>
 
-You can then add lines for each of the following PurchasePhoneNumbersController methods and comment out each line as needed, or create unique files for each of the following methods:
+Add the following PurchasePhoneNumbersController methods between $`pnc = new PurchasablePhoneNumbersController();` and `?> `and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -217,8 +242,8 @@ The `listAreaAndExchange` method allows you to retrieve a list of every NPA NXX 
 #####Usage
 Add the following lines to your PHP file:
 	
-	$response = $pnc->listAreaAndExchange ()
-	print_r($response)
+	$response = $pnc->listAreaAndExchange();
+	print_r($response);
 
 >**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
 	
@@ -272,7 +297,7 @@ The search method is the most robust option for searching through Flowroute's pu
 Add the following lines to your PHP file:
 
 	$response = $pnc->search();
-	print_r($response)
+	print_r($response);
 
 >**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
 
@@ -369,13 +394,15 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 	require_once('vendor/autoload.php');
 
 	use FlowrouteNumbersLib\Controllers\TelephoneNumbersController;
+	use FlowrouteNumbersLib\APIException;
 	
 	$tnc = new TelephoneNumbersController();
+	
+	use FlowrouteNumbersLib\Models\BillingMethod;
 
 	?>
 
-You can then add lines for each of the following PurchasePhoneNumbersController methods and comment out each line as needed, or create unique files for each of the following methods:
-The Telephone Numbers Controller contains all of the methods necesary to purchase a new phone number and to manage your owned phone number inventory. The Controller supports the following methods:
+Add the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>` and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
 
 <li>[`purchase`](#purchaseno)
 <li>[`listAccountTelephoneNumbers`](#listnumbers)
@@ -441,8 +468,10 @@ If the purchase is successful, a **201 Created** and empty message string are re
 The listAccountTelephoneNumbers method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
 #####Usage
+Add the following lines between `use FlowrouteNumbersLib\Models\BillingMethod;` and `?>`:
 
-	listAccountTelephoneNumbers()
+	listAccountTelephoneNumbers();
+	print_r($response);
 
 The method takes the following parameters:
 
@@ -510,7 +539,7 @@ The telephoneNumberDetails method is used to retrieve the billing method, primar
 #####Usage
 
 		$number = 'telephoneNumber';
-		telephoneNumberDetails($number)
+		telephoneNumberDetails($number);
 		print_r($response);
 
 >**Note:** `$number` and `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
@@ -553,8 +582,8 @@ The following information is returned within the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
-|| `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
-| |`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) endpoint.|
+|`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
+|`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.<br>**Note:** Routes are created using the [createNewRoute](#createroute) method.|
 
 #### `update ($number,$routes)`<a name=updateroute></a>
 
@@ -568,7 +597,7 @@ The `update` method is used to update both the primary and failover route for a 
 	$response = $tnc->update('telephoneNumber',$rtes);
 	print_r($response);
 
->**Important:** `$rtes` and `$response` are variables that can be assigned any name of you choose, and of any length; however, the names you choose you must use consistently in the method.
+>**Important:** `$rtes` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
 
 | Parameter       | Required | Type |Description                                                       |
 |-----------------|----------|-------|-----------------------------------------------------------------|
@@ -593,9 +622,21 @@ No confirmation message is returned for a successful update. To view the route c
 
 ###InboundRoutesController<a name=inboundco></a>
 
-The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes.
+The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **routes.php** file that must contain the following information:
 
-The Controller supports the following methods:
+	<?php
+
+	require_once('vendor/autoload.php');
+
+	use FlowrouteNumbersLib\Controllers\InboundRoutesController;
+	use FlowrouteNumbersLib\APIException;
+
+	$irc = new InboundRoutesController();
+	
+	use FlowrouteNumbersLib\Models\Route;
+
+	?>
+Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>` and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`mlist`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -606,10 +647,13 @@ The list method is used to return all of the existing inbound routes from your F
 
 #####Usage
 
-	$response = $inbound->mlist();
-	print_r($response)
+Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
 
->**Important:** `$response` is a variable that can be assigned any name of you choose, and of any length; however, the name you choose you must use consistently in the method.
+	$inbound = new InboundRoutesController();
+	$response = $inbound->mlist();
+	print_r($response);
+
+>**Important:**  `$inbound` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use the names consistently within the method.
 
 The method takes the following parameters:
 
@@ -664,6 +708,8 @@ The `createNewRoute` method is used to create a new inbound route.
 
 #####Usage
 
+Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
+
 	$response = $irc->createNewRoute('routeName','type','value');
 	print_r($response)
 
@@ -675,11 +721,11 @@ The method takes the following parameters:
 |-----------|----------|------|-----------------------------------------------------------------------------|
 | `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted charactters.  |
 | `type`      | True   |  string |The type of route you would like to create. Valid options are `HOST`, `PSTN`, and `URI`. |
-| `value`     | True    |string | Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>                                           |
+| `value`     | True    |string | Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>              |
 
 ##### Example Usage
 
-You can pass as many `createNewRoute` methods in a single operation. The following example creates new PSTN, HOST, and URI routes:
+You can pass as many `createNewRoute` methods in a single operation. The following example creates new `PSTN`, `HOST`, and `URI` routes:
 
 	$response = $irc->createNewRoute('PSTNroute2','PSTN','12066417848');
 	print_r($response);
