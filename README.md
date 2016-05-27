@@ -376,7 +376,7 @@ Based on the passed parameters passed in `search()`, the response returns three 
 ```
 
 #####Response field descriptions	
-The following fields are returned in the response:
+The following information is returned in the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|
@@ -406,7 +406,7 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 
 	?>
 
-Add the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>` and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
+Add any of the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>` and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -422,6 +422,7 @@ The purchase method is used to purchase a telephone number from Flowroute's inve
 	$billing = new BillingMethod('');
 	$number = 'phone number';
 	$response = $tnc->purchase($billing, $number);
+	print_r($response);
 
 Create three variables:
 
@@ -525,7 +526,7 @@ Based on the passed parameters, the number purchased using the [purchase](#purhc
  
 #####Response field descriptions	
  
-The following information is returned within the response:
+The following information is returned in the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|
@@ -535,7 +536,7 @@ Parameter | Description                                             |
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
 
-#### `telephoneNumberDetails($Number)`<a name=phonedetails></a>
+#### `telephoneNumberDetails($number)`<a name=phonedetails></a>
 
 The telephoneNumberDetails method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
@@ -581,14 +582,14 @@ For the following example, the number purchased using the [purchase](#purchaseno
 
 #####Response field descriptions	
  
-The following information is returned within the response:
+The following information is returned in the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
 |`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
-|`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.<br>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
+|`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
-#### `update ($number,$routes)`<a name=updateroute></a>
+#### `update ($routes, $number)`<a name=updateroute></a>
 
 The `update` method is used to update both the primary and failover route for a phone number. Both the primary and failover route must be specified inside of an array. See Example Usage below. The first route name specified is assigned as the primary route and the second route name specified will be assigned as the failover route. The list of available route names can be retrieved by using the list method in the InboundRoutesController.
 
@@ -704,6 +705,14 @@ Based on the parameters passed in the request, the following is returned:
 	)
 
 These routes can be applied to any of your purchased phone numbers using the [`update`](#updateroute) method.
+
+#####Response field descriptions
+
+The following information is returned in the response:
+
+| Parameter |  Description                                                     |
+|-----------|--------------------------------------------------------------------------------|
+| `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
 
 #### `createNewRoute ($routeName,$type,$value)`<a name=createroute></a>
  
