@@ -386,7 +386,7 @@ Parameter | Description                                             |
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
 | |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
 ||	`ratecenter`- The ratecenter associated with the NPA NXX.|
-||	`state`- The US State or Canadian province or territory in which the NPA NXX is located.</ol>|
+||	`state`- The US state or Canadian province or territory in which the NPA NXX is located.</ol>|
 
 
 ### TelephoneNumbersController<a name=telephoneno></a>
@@ -436,7 +436,7 @@ The variables then take the following parameters
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
-| `BillingMethod`   | True     |string  | Sets the billing method applied to the purchased number. This must be one of the following: <li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li>|       
+| `BillingMethod`   | True     |string  | Sets the billing method applied to the purchased number. This must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
 | `phone number` | True    | string | The telephone number to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 	
 ##### Example Usage
@@ -469,7 +469,7 @@ If the purchase is successful, a **201 Created** and empty message string are re
 
 ####`listAccountTelephoneNumbers ($limit = NULL,$page = NULL,$pattern = NULL)`<a name=listnumbers></a>
 
-The listAccountTelephoneNumbers method is used to retrieve a list of all of the phone numbers on your Flowroute account.
+The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
 #####Usage
 Add the following lines between `use FlowrouteNumbersLib\Models\BillingMethod;` and `?>`:
@@ -640,7 +640,7 @@ The Inbound Routes Controller contains the methods required to view all of your 
 	use FlowrouteNumbersLib\Models\Route;
 
 	?>
-Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>` and then comment out each line as needed. You can also create individual files for each method as long as each file contains the information above.
+Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>` and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`mlist`](#listroutes)
 * 	[`createNewRoute`](#createroute)
