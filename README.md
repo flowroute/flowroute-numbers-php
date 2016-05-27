@@ -93,16 +93,20 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 
 	The Controllers point automatically to **Configuration.php**, so there is no need to do anything else with this file.
 	
-With the SDK imported, and your API credentials added, you can now run the methods to perform functions within the SDK. There are two ways of doing this.
+5.	With the libraries set up and your API credentials added, you can now run the methods to perform functions within the SDK. There are two ways of doing this.
 
-1.	[Use demo.php](#usedemo)
-2. [Create a PHP file](#createphp)
+	*	[Use demo.php](#usedemo)
+	*	[Create a PHP file](#createphp)
 
 ## Use demo.php<a name=usedemo></a>
 
 A demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials and retrieve information.
 
-To use **demo.php**, open the file with a code text editor, such as *Sublime Text*, and modify parameters or comment out lines as needed. For information on the parameters within the file, see the applicable Controller information:
+To use **demo.php**, open the file with a code text editor, such as *Sublime Text*, and modify parameters if needed or comment out lines. Whether or not you add any parameters or comment out lines, the file can be run as-is by running the following on the command line:
+
+	run demo.php
+
+For information on the parameters within the file, see the applicable Controller information:
 
 *	[`PurchasablePhoneNumbersController`](#purchaseno)
 
@@ -146,10 +150,7 @@ This SDK covers option number 2, creating unique Controller files. However, rega
 
 		run <Controller File Name.PHP>
 
-Before proceeding, you must first set up your API credentials.
 
-
-	
 ## Controllers<a name=controllers></a>
 
 This following sections describe **flowroute-numbers-php** Controllers:
@@ -435,7 +436,7 @@ The variables then take the following parameters
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
 | `BillingMethod`   | True     |string  | Sets the billing method applied to the purchased number. This must be one of the following: <li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li>|       
-| `number` | True    | string | The telephone number to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
+| `phone number` | True    | string | The telephone number to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 	
 ##### Example Usage
 
@@ -585,13 +586,13 @@ The following information is returned within the response:
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
 |`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
-|`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.<br>**Note:** Routes are created using the [createNewRoute](#createroute) method.|
+|`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.<br>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
 #### `update ($number,$routes)`<a name=updateroute></a>
 
 The `update` method is used to update both the primary and failover route for a phone number. Both the primary and failover route must be specified inside of an array. See Example Usage below. The first route name specified is assigned as the primary route and the second route name specified will be assigned as the failover route. The list of available route names can be retrieved by using the list method in the InboundRoutesController.
 
->**Note:** In order to apply an existing route to a number, the route must first be created using the [createNewRoute](#createRoute) method. To view a list of your existing routes, use the [mlist](#listroutes) method.
+>**Note:** In order to apply an existing route to a number, the route must first be created using the [createNewRoute](#createRoute) method. To view a list of your existing routes, use the [`mlist`](#listroutes) method.
 
 #####Usage
 
@@ -659,7 +660,7 @@ Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
 
 The method takes the following parameters:
 
-| Parameter | Required | Type   |Usage                                    |
+| Parameter | Required | Type   |Description                                    |
 |-----------|----------|---------|----------------------------------------|
 | `limit`     | False    | integer| Controls the number of routes returned. The maximum numberis 200. If neither a number nor `null` are passed, a default of ten routes are returned.  |                    
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
@@ -719,11 +720,11 @@ Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
 
 The method takes the following parameters:
 
-| Parameter | Required | Type| Usage                                                                        |
+| Parameter | Required | Type| Description                                                                        |
 |-----------|----------|------|-----------------------------------------------------------------------------|
-| `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted charactters.  |
+| `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted characters.  |
 | `type`      | True   |  string |The type of route you would like to create. Valid options are `HOST`, `PSTN`, and `URI`. |
-| `value`     | True    |string | Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>              |
+| `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>              |
 
 ##### Example Usage
 
