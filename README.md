@@ -54,14 +54,55 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 		php composer.phar install
 
  	Composer sets up the required file structure.
- 	
-## Use demo.php
 
-A Demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials and retrieve information.
+3. Next, set up **flowroute-numbers-php** to use your API credentials. 
 
->**Note:** Before running the **demo.php** file you will need to configure your API credentials. See [Set up your API credentials](#credentials)
+##Set up your API credentials<a name=credentials></a>
 
-To use **demo.php**, open the file with a code text editor, such as Sublime Text, and modify parameters or comment out lines as needed. For information on the parameters within the file, see the applicable Controller information:
+1.	From the **flowroute-numbers-php** directory change directories to **src**. 
+
+2.	Using a code text editor, open **Configuration.php**.
+
+3.	In **Configure.php** replace the AccessKey and SecretKey variables with your Flowroute API credentials. The file should resemble the following:
+
+	```sh
+		<?php
+		/*
+		 * FlowrouteNumbersLib
+		 *
+		 * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
+		 */
+	
+		namespace FlowrouteNumbersLib;
+	
+		class Configuration {
+ 			//The base Uri for API calls
+   			public static $BASEURI = 'https://api.flowroute.com/v1';
+	
+			//Tech Prefix
+    		//TODO: Replace the $username with an appropriate value
+			public static $username = '1111111';
+
+			//API Secret Key
+			//TODO: Replace the $password with an appropriate value
+			public static $password = 'm8axLA45yds7kmiC88aOQ9d5caADg6vr';
+		}
+```
+
+4.	Save the file.
+
+	The Controllers point automatically to **Configuration.php**, so there is no need to do anything else with this file.
+	
+With the SDK imported, and your API credentials added, you can now run the methods to perform functions within the SDK. There are two ways of doing this.
+
+1.	[Use demo.php](#usedemo)
+2. [Create a PHP file](#createphp)
+
+## Use demo.php<a name=usedemo></a>
+
+A demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials and retrieve information.
+
+To use **demo.php**, open the file with a code text editor, such as *Sublime Text*, and modify parameters or comment out lines as needed. For information on the parameters within the file, see the applicable Controller information:
 
 *	[`PurchasablePhoneNumbersController`](#purchaseno)
 
@@ -71,7 +112,7 @@ To use **demo.php**, open the file with a code text editor, such as Sublime Text
 
 If you do not want to use the file, the following sections describe creating your own PHP files.
 
-## Create a PHP file to import the Controllers and Models
+## Create a PHP file to import the Controllers and Models<a name=createphp></a>
 
 The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
 
@@ -107,41 +148,7 @@ This SDK covers option number 2, creating unique Controller files. However, rega
 
 Before proceeding, you must first set up your API credentials.
 
-## Set up your API credentials<a name=credentials></a>
 
-1.	From the **flowroute-numbers-php** directory change directories to **src**. 
-
-2.	Using a code text editor, open **Configuration.php**.
-
-3.	In **Configure.php** replace the AccessKey and SecretKey variables with your Flowroute API credentials. The file should resemble the following:
-
-	```sh
-		<?php
-		/*
-		 * FlowrouteNumbersLib
-		 *
-		 * This file was automatically generated for flowroute by APIMATIC BETA v2.0 on 02/12/2016
-		 */
-	
-		namespace FlowrouteNumbersLib;
-	
-		class Configuration {
- 			//The base Uri for API calls
-   			public static $BASEURI = 'https://api.flowroute.com/v1';
-	
-			//Tech Prefix
-    		//TODO: Replace the $username with an appropriate value
-			public static $username = '1111111';
-
-			//API Secret Key
-			//TODO: Replace the $password with an appropriate value
-			public static $password = 'm8axLA45yds7kmiC88aOQ9d5caADg6vr';
-		}
-```
-
-4.	Save the file.
-
-	The Controllers point automatically to **Configuration.php**, so there is no need to do anything else with this file.
 	
 ## Controllers<a name=controllers></a>
 
@@ -317,7 +324,7 @@ In the following example, a search request sets the `limit` to `3`, `206` for th
 	print_r($response);
 	
 #####Response
-Based on the passed parameters for the `search()`, the response returns three results:
+Based on the passed parameters passed in `search()`, the response returns three results:
 
 ```sh
 (
@@ -377,7 +384,7 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
 | |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
-||	`ratecenter`- The ratecenter associated with the NPA/NXX.|
+||	`ratecenter`- The ratecenter associated with the NPA NXX.|
 ||	`state`- The US State or Canadian province or territory in which the NPA NXX is located.</ol>|
 
 
