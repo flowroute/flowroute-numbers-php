@@ -1,6 +1,6 @@
 # flowroute-numbers-php
 
-**flowroute-numbers-php** is a php API Wrapper that provides methods for interacting with **v1** (version 1) of the [Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
+**flowroute-numbers-php** is a PHP API Wrapper that provides methods for interacting with **v1** (version 1) of the [Flowroute](https://www.flowroute.com) API. These methods can be used to accomplish the following:
 
 * Search for purchasable phone numbers
 * Purchase phone numbers
@@ -179,7 +179,7 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 
 	?>
 
-Add the following PurchasePhoneNumbersController methods between $`pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
+Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
