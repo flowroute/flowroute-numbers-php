@@ -78,6 +78,36 @@ $inbound = new InboundRoutesController();
 
 // Retrieve Routes
 print("--Retrieve Inbound Routes\n");
-$response = $inbound->mlist();
-print_r($response);
+try {
+	$response = $inbound->mlist();
+	print_r($response);
+} catch(APIException $e) {
+    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+}
+
+// Create Route
+print("--Create New Inbound Route\n");
+try {
+	$routename = 'PSTNroute1';
+	$routetype = 'PSTN';
+	$routevalue = '12065551212';
+	$response = $inbound->createNewRoute($routename, $routetype, $routevalue);
+	print_r("New Inbound Route Successfully Created\n");
+} catch(APIException $e) {
+    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+}
+
+//update routes
+print("--Update TN's Primary and Failover Route\n");
+try {
+	$rtes = '{"routes": [{"name": "PSTNroute1"}, {"name": "PSTNroute1"}]}';
+	$tn = "19515551212"; 
+	$response = $tnc->update($tn, $rtes);
+	print_r($response);
+} catch(APIException $e) {
+    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+}
+
+
+
 
