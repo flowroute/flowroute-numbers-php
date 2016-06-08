@@ -9,7 +9,7 @@
 * Update the primary and failover route on a phone number
 
 ### Documentation 
-The full documentation for the v2 Flowroute API is available [here](https://developer.flowroute.com/v2.0/docs).
+The full documentation for the v1 Flowroute API is available [here](https://developer.flowroute.com/v1.0/docs).
 
 ##Before you begin
 
@@ -120,8 +120,9 @@ If you do not want to use the file, the following sections describe creating you
 
 The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
 
-When creating your own file for running the methods you will need to create one or more files that instantiate the Controllers and the methods. The following shows these lines. Depending on your approach, not all lines will be required
+When creating your own file for running the methods you will need to create one or more files that instantiate the Controllers and the methods. 
 
+The following shows an example of a single PHP file that instantiates all Controllers:
 	
 		require_once('vendor/autoload.php');
 	
@@ -137,8 +138,7 @@ When creating your own file for running the methods you will need to create one 
 		use FlowrouteNumbersLib\Models\BillingMethod;
 		use FlowrouteNumbersLib\Models\Route;
 		
-
- You can approach the file creation through any of the following methods:
+ You can create your own PHP file using any of the following methods:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
  
@@ -146,9 +146,9 @@ When creating your own file for running the methods you will need to create one 
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-This SDK covers option number 2, creating unique Controller files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
+This SDK describes the second option, creating unique PHP files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
 
-		run <Controller File Name.PHP>
+		run <Controller File Name.php>
 
 
 ## Controllers<a name=controllers></a>
@@ -161,8 +161,17 @@ This following sections describe **flowroute-numbers-php** Controllers:
 
 *	[`InboundRoutesController`](#inboundco) 
 
-When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, the `listAreaAndExchange ($limit=null,$npa=null,$page=null);` method can be formatted as `listAreaAndExchange (10,206,3);` where the `limit` is `10`, the `npa` is `206`, and the page to return is `3`.
+###Passing parameters and values in a method
 
+When passing a method, and the method has additional parameters, you are not required to pass the parameter name in the method. For example, a method can pass parameters as follows:
+
+	listAreaAndExchange ($limit=10,$npa=206,$page=3);
+	
+However, the method can also be run without passing the parameter name:
+
+	listAreaAndExchange (10,206,3);
+
+Examples in this SDK use the latter method of not passing parameter names.
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
@@ -179,7 +188,7 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 
 	?>
 
-Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
+Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. 
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -187,7 +196,7 @@ Add the following PurchasePhoneNumbersController methods between `$pnc = new Pur
 
 You can run the file on the command line using the `php <PHP file>` command.
 
-#### `listAvailableNPAs ($limit=null)`<a name=listnpa></a>
+#### `listAvailableNPAs ($limit);`<a name=listnpa></a>
 
 The `listAvailableNPAs` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
 #####Usage
@@ -197,7 +206,7 @@ Add the following lines to your PHP file:
 	$response = $pnc->listAvailableNPAs();
 	print_r($response);
 
->**Note:** `$response` can be any name of you choose, and of any length, but the name you choose must be used consistently in the method.
+>**Note:** `$response` can be any name of you choose, and of any length, but the name you choose must be used consistently within the PHP file.
 
 The method can take the following parameter:
 
@@ -243,9 +252,9 @@ For the `listAvailableNPAs(3)` request, the first three NPAs are returned:
         )
 ```
 
-#### `listAreaAndExchange ($limit=null,$npa=null,$page=null)`<a name=listnpanxx></a>
+#### `listAreaAndExchange ($limit,$npa,$page);`<a name=listnpanxx></a>
 
-The `listAreaAndExchange` method allows you to retrieve a list of every NPA NXX (area code and exchange) combination available in Flowroute's phone number inventory.
+The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
 Add the following lines to your PHP file:
@@ -253,13 +262,13 @@ Add the following lines to your PHP file:
 	$response = $pnc->listAreaAndExchange();
 	print_r($response);
 
->**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently within the PHP file.
 	
 The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
 |-----------|----------|--------------|-------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPA-NXX combinations are returned.                 |
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPANXX combinations are returned.                 |
 | `npa`       | False  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
 
@@ -271,7 +280,7 @@ In the following, a request is made to limit the results to `2`, the NPA to `203
 	print_r($response);
 	
 #####Example response
-Based on the example usage above, the following two NPA NXX combinations are returned on page 2, organized by NPANXX. 
+Based on the example usage above, the following two NPANXX combinations are returned on page 2, organized by NPANXX. 
 
 ```sh
 (
@@ -293,7 +302,7 @@ Based on the example usage above, the following two NPA NXX combinations are ret
         )
 )
 ```
-#### `search ($limit = NULL,$npa = NULL,$nxx = NULL,$page = NULL,$ratecenter = NULL,$state = NULL,$tn = NULL)`<a name=searchno></a>
+#### `search ($limit,$npa,$nxx,$page,$ratecenter,$state,$tn);`<a name=searchno></a>
 
 The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and TN.
 
@@ -303,13 +312,13 @@ Add the following lines to your PHP file:
 	$response = $pnc->search();
 	print_r($response);
 
->**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently within the file.
 
 The method supports the following parameters:
 
 | Parameter  | Required|   Type|          Description                                         |
 |------------|----------|------|--------------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPA NXX combinations are returned.                      |
+| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPANXX combinations are returned.                      |
 | `npa`       | False, unless `nxx` is passed, then `True`.  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `nxx`       |False  | integer |Three-digit exchange. Limits the results for the specified NXX. If no `nxx` is passed, `null` is used and all results are returned. Partial search is also supported. For example, passing `'45'` for the `nxx` returns exchanges that include `45`. Note that if you pass an `nxx` you must also pass an `npa`. |
 | `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
@@ -385,8 +394,8 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
 | |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
-||	`ratecenter`- The ratecenter associated with the NPA NXX.|
-||	`state`- The US state or Canadian province or territory in which the NPA NXX is located.</ol>|
+||	`ratecenter`- The ratecenter associated with the NPANXX.|
+||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
 
 ### TelephoneNumbersController<a name=telephoneno></a>
@@ -413,7 +422,7 @@ Add any of the following TelephoneNumbersController methods between `$use Flowro
 *	[`telephoneNumberDetails`](#phonedetails)
 *	[`update`](#updateroute)
 
-#### `purchase ($billing,$number)`<a name=purchaseno></a>
+#### `purhcase ($billing);($number);`<a name=purchaseno></a>
 
 The purchase method is used to purchase a telephone number from Flowroute's inventory.
 
@@ -467,7 +476,7 @@ If the purchase is successful, a **201 Created** and empty message string are re
   	    	  )
 
 
-####`listAccountTelephoneNumbers ($limit = NULL,$page = NULL,$pattern = NULL)`<a name=listnumbers></a>
+####`listAccountTelephoneNumbers ($limit,$page,$pattern);`<a name=listnumbers></a>
 
 The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
@@ -476,6 +485,8 @@ Add the following lines between `use FlowrouteNumbersLib\Models\BillingMethod;` 
 
 	listAccountTelephoneNumbers();
 	print_r($response);
+
+>**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the file.
 
 The method takes the following parameters:
 
@@ -536,7 +547,7 @@ Parameter | Description                                             |
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
 
-#### `telephoneNumberDetails($number)`<a name=phonedetails></a>
+#### `telephoneNumberDetails($number);`<a name=phonedetails></a>
 
 The telephoneNumberDetails method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
@@ -546,7 +557,7 @@ The telephoneNumberDetails method is used to retrieve the billing method, primar
 		telephoneNumberDetails($number);
 		print_r($response);
 
->**Note:** `$number` and `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the method.
+>**Note:** `$number` and `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the PHP file.
 
 The method takes the following parameter:
 
@@ -589,7 +600,7 @@ Parameter | Description                                             |
 |`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
 |`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
-#### `update ($routes, $number)`<a name=updateroute></a>
+#### `update ($number, $rtes);`<a name=updateroute></a>
 
 The `update` method is used to update both the primary and failover route for a phone number. Both the primary and failover route must be specified inside of an array. See Example Usage below. The first route name specified is assigned as the primary route and the second route name specified will be assigned as the failover route. The list of available route names can be retrieved by using the list method in the InboundRoutesController.
 
@@ -598,15 +609,17 @@ The `update` method is used to update both the primary and failover route for a 
 #####Usage
 
 	$rtes = '{"routes": [{"name": "primary route name"}, {"name": "failover route name"}]}'; 
-	$response = $tnc->update('telephoneNumber',$rtes);
+	$response = $tnc->update('number',$rtes);
 	print_r($response);
 
->**Important:** `$rtes` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the method.
+>**Important:** `$rtes` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the PHP file.
+
+The method takes the following parameters:
 
 | Parameter       | Required | Type |Description                                                       |
 |-----------------|----------|-------|-----------------------------------------------------------------|
 |`name='route name'`|True| string| Name of an existing route. The first `name` in the array will be assigned the primary route; the second `name` in the array will be assigned the secondary, or failover, route. 
-| `telephoneNumber` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
+| `number` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
 
 ##### Example Usage
 	
@@ -622,7 +635,7 @@ No confirmation message is returned for a successful update. To view the route c
 #####Error response 
 | Error code | Message  | Description                                           |
 |------------|----------|-------------------------------------------------------|
-|No error code.  |HTTP Response Not OK|This can be caused when a route does not exist, a route name has been misspelled, or an incorrect phone number was passed in the method.|
+|No error code.  |HTTP Response Not OK|This can be caused when a route does not exist, a route name has been misspelled, or an incorrect phone number was passed in the PHP file.|
 
 ###InboundRoutesController<a name=inboundco></a>
 
@@ -645,7 +658,7 @@ Add the following InboundRoutesController methods between `use FlowrouteNumbersL
 *	[`mlist`](#listroutes)
 * 	[`createNewRoute`](#createroute)
 
-#### `mlist ($limit = NULL,$page = NULL)`<a name=listroutes></a>
+#### `mlist ($limit,$page);`<a name=listroutes></a>
 
 The list method is used to return all of the existing inbound routes from your Flowroute account.
 
@@ -653,17 +666,17 @@ The list method is used to return all of the existing inbound routes from your F
 
 Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
 
-	$inbound = new InboundRoutesController();
+
 	$response = $inbound->mlist();
 	print_r($response);
 
->**Important:**  `$inbound` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use the names consistently within the method.
+>**Important:**  `$inbound` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use the names consistently within the PHP file.
 
 The method takes the following parameters:
 
 | Parameter | Required | Type   |Description                                    |
 |-----------|----------|---------|----------------------------------------|
-| `limit`     | False    | integer| Controls the number of routes returned. The maximum numberis 200. If neither a number nor `null` are passed, a default of ten routes are returned.  |                    
+| `limit`     | False    | integer| Controls the number of routes returned. The maximum number is 200. If neither a number nor `null` are passed, a default of ten routes are returned.  |                    
 | `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
 
 ##### Example Usage
@@ -714,7 +727,7 @@ The following information is returned in the response:
 |-----------|--------------------------------------------------------------------------------|
 | `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
 
-#### `createNewRoute ($routeName,$type,$value)`<a name=createroute></a>
+#### `createNewRoute ($routeName,$type,$value;)`<a name=createroute></a>
  
 The `createNewRoute` method is used to create a new inbound route.
 
@@ -725,7 +738,7 @@ Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
 	$response = $irc->createNewRoute('routeName','type','value');
 	print_r($response);
 
->**Important:** `$response` is a variable that can be assigned any name of you choose, and of any length; however, the name you choose you must use consistently in the method.
+>**Important:** `$response` is a variable that can be assigned any name of you choose, and of any length; however, the name you choose you must be used consistently within the PHP file.
 
 The method takes the following parameters:
 
@@ -733,7 +746,7 @@ The method takes the following parameters:
 |-----------|----------|------|-----------------------------------------------------------------------------|
 | `routeName` | True    |  string| The name of the new route. An unlimited number of alphanumeric characters is supported. There are no unrestricted characters.  |
 | `type`      | True   |  string |The type of route you would like to create. Valid options are `HOST`, `PSTN`, and `URI`. |
-| `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.</li></ul>              |
+| `value`     | True    |string |  Value of the route, dependent on the `type`: <ul><li>If `HOST`, the value must be an IP address or URL with an optional port number—for example, an IP address could be `24.239.23.40:5060` or a URL could be `myphone.com`. If no port is specified, the server will attempt to use DNS SRV records. <li>If `PSTN`, the value must be formatted as a valid E.164, 11-digit formatted North American phone number—for example,`12066417848`. You cannot use the same number as the number for which the route is created. <li>If `URI`, the value must be formatted as  `protocol:user@domain[:port][;transport=<tcp/udp>`—for example, `sip:alice@seattle.com`,  `sip:12066417848@215.122.69.152:5060;transport=tcp`, or `sips:securecall@securedserver.com`.You cannot use the same number as the number for which the route is created. </li></ul>              |
 
 ##### Example Usage
 
@@ -745,3 +758,14 @@ You can pass as many `createNewRoute` methods in a single operation. The followi
 	print_r($response);
 	$response = $irc->createNewRoute('URIroute2','URI','sip:12066417848@215.122.69.152:5060');
 	print_r($response);
+	
+#####Example response
+
+No response is returned for each successfully created route; no other code or message is returned. An error encountered for a specific `irc.create_new_route()` line will not prevent the other routes from being created.
+
+#####Error response
+The following error can be returned:
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `value` is malformed. |
