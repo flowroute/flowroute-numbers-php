@@ -183,7 +183,7 @@ Examples in this SDK use the latter method of not passing parameter names.
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
-The Purchasable Phone Numbers Controller contains all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **purchase.php** file contains the following information:
+The PurchasablePhoneNumbers Controller supports all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **purchase.php** file contains the following information:
 
 	<?php
 
@@ -411,7 +411,7 @@ Parameter | Description                                             |
 
 ### TelephoneNumbersController<a name=telephoneno></a>
 
-The TelephoneNumbersController contains all of the methods necessary to purchase and manage a Flowroute number. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **telephone.php** file contains the following information:
+The TelephoneNumbersController supports all of the methods necessary to purchase and manage a Flowroute number. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **telephone.php** file contains the following information:
 
 	<?php
 
