@@ -138,6 +138,14 @@ The following shows an example of a single PHP file that instantiates all Contro
 		use FlowrouteNumbersLib\Models\BillingMethod;
 		use FlowrouteNumbersLib\Models\Route;
 		
+		
+		
+ >**Important:** Throughout this SDK, `response` is used in examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. For example, you might have the following:
+>
+>`$blob = $pnc->listAvailableNPAs();`
+>
+>`print_r($blob);`
+ 
  You can create your own PHP file using any of the following methods:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
@@ -146,7 +154,7 @@ The following shows an example of a single PHP file that instantiates all Contro
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-This SDK describes the second option, creating unique PHP files. However, regardless of which option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
+TThis SDK describes the third option. However, whichever option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
 
 		run <Controller File Name.php>
 
@@ -186,9 +194,21 @@ The Purchasable Phone Numbers Controller contains all of the methods necessary t
 	
 	$pnc = new PurchasablePhoneNumbersController();
 
+	#List Available NPAs
+	$response = $pnc->listAvailableNPAs();
+	print_r($response);
+	
+	#List Area and Exchange
+	$response = $pnc->listAreaAndExchange();
+	print_r($response);
+	
+	#Search
+	$response = $pnc->search();
+	print_r($response);	
+	
 	?>
 
-Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`, and then comment out each method as needed. 
+Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`. If you do not want to execute a specific method, comment those lines out with `#`
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -201,12 +221,8 @@ You can run the file on the command line using the `php <PHP file>` command.
 The `listAvailableNPAs` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
 #####Usage
 
-Add the following lines to your PHP file:
-
 	$response = $pnc->listAvailableNPAs();
 	print_r($response);
-
->**Note:** `$response` can be any name of you choose, and of any length, but the name you choose must be used consistently within the PHP file.
 
 The method can take the following parameter:
 
@@ -257,13 +273,10 @@ For the `listAvailableNPAs(3)` request, the first three NPAs are returned:
 The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
-Add the following lines to your PHP file:
-	
+
 	$response = $pnc->listAreaAndExchange();
 	print_r($response);
 
->**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently within the PHP file.
-	
 The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
@@ -307,12 +320,9 @@ Based on the example usage above, the following two NPANXX combinations are retu
 The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and TN.
 
 #####Usage
-Add the following lines to your PHP file:
 
 	$response = $pnc->search();
 	print_r($response);
-
->**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently within the file.
 
 The method supports the following parameters:
 
@@ -385,6 +395,7 @@ Based on the passed parameters passed in `search()`, the response returns three 
 ```
 
 #####Response field descriptions	
+
 The following information is returned in the response:
 
 Parameter | Description                                             |
@@ -412,17 +423,39 @@ The TelephoneNumbersController contains all of the methods necessary to purchase
 	$tnc = new TelephoneNumbersController();
 	
 	use FlowrouteNumbersLib\Models\BillingMethod;
-
+	
+	#Purchase a Telephone Number
+	$billing = new BillingMethod('');
+	$number = 'phone number';
+	$response = $tnc->purchase($billing, $number);
+	print_r($response);
+	
+	#List Account Telephone Numbers
+	$response = $tnc->listAccountTelephoneNumbers();
+	print_r($response);
+	
+	#Telephone Number Details
+	$number = 'telephoneNumber';
+	$response = $tnc->telephoneNumberDetails($number);
+	print_r($response);
+	
+	#Update Telephone Number Routes
+	$rtes = '{"routes": [{"name": "primary route name"}, {"name": "failover route name"}]}'; 
+	$response = $tnc->update('number',$rtes);
+	print_r($response);
+	
 	?>
 
-Add any of the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>` and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
+Add any of the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>`.  If you do not want to execute a specific method, comment those lines out with `#`
+
+The TelephoneNumbersController supports the following methods:
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
 *	[`telephoneNumberDetails`](#phonedetails)
 *	[`update`](#updateroute)
 
-#### `purhcase ($billing);($number);`<a name=purchaseno></a>
+#### `purchase ($billing, $number);`<a name=purchaseno></a>
 
 The purchase method is used to purchase a telephone number from Flowroute's inventory.
 
@@ -450,7 +483,7 @@ The variables then take the following parameters
 	
 ##### Example Usage
 
-For the following example, a new number is being purchased that uses `VPRI` for the billing method:
+For the following example, a new number is purchased using `VPRI` for the billing method:
 
 	$billing = new BillingMethod('VPRI');
 	$number = '12066417848';
@@ -481,12 +514,9 @@ If the purchase is successful, a **201 Created** and empty message string are re
 The `listAccountTelephoneNumbers` method is used to retrieve a list of all of the phone numbers on your Flowroute account.
 
 #####Usage
-Add the following lines between `use FlowrouteNumbersLib\Models\BillingMethod;` and `?>`:
 
-	listAccountTelephoneNumbers();
+	$response = $tnc->listAccountTelephoneNumbers();
 	print_r($response);
-
->**Note:** `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the file.
 
 The method takes the following parameters:
 
@@ -546,7 +576,6 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
-
 #### `telephoneNumberDetails($number);`<a name=phonedetails></a>
 
 The telephoneNumberDetails method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
@@ -554,7 +583,7 @@ The telephoneNumberDetails method is used to retrieve the billing method, primar
 #####Usage
 
 		$number = 'telephoneNumber';
-		telephoneNumberDetails($number);
+		$response = $tnc->telephoneNumberDetails($number);
 		print_r($response);
 
 >**Note:** `$number` and `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the PHP file.
@@ -616,8 +645,8 @@ The `update` method is used to update both the primary and failover route for a 
 
 The method takes the following parameters:
 
-| Parameter       | Required | Type |Description                                                       |
-|-----------------|----------|-------|-----------------------------------------------------------------|
+| Parameter       | Required | Type |Description |                                                     
+|-----------------|----------|-------|----------------------------------------------------------|
 |`name='route name'`|True| string| Name of an existing route. The first `name` in the array will be assigned the primary route; the second `name` in the array will be assigned the secondary, or failover, route. 
 | `number` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
 
@@ -639,7 +668,7 @@ No confirmation message is returned for a successful update. To view the route c
 
 ###InboundRoutesController<a name=inboundco></a>
 
-The Inbound Routes Controller contains the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **routes.php** file that must contain the following information:
+The InboundRoutesController supports the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **routes.php** file that must contain the following information:
 
 	<?php
 
@@ -651,9 +680,20 @@ The Inbound Routes Controller contains the methods required to view all of your 
 	$irc = new InboundRoutesController();
 	
 	use FlowrouteNumbersLib\Models\Route;
+	
+	#List Routes
+	$response = $inbound->mlist();
+	print_r($response);
+	
+	#Create a New Route
+	$response = $irc->createNewRoute('routeName','type','value');
+	print_r($response);
 
 	?>
-Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>` and then comment out each method as needed. You can also create individual files for each method as long as each file contains the information above.
+
+Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>`. If you do not want to execute a specific method, comment those lines out with `#`.
+
+The Controller supports the following methods:
 
 *	[`mlist`](#listroutes)
 * 	[`createNewRoute`](#createroute)
@@ -663,9 +703,6 @@ Add the following InboundRoutesController methods between `use FlowrouteNumbersL
 The list method is used to return all of the existing inbound routes from your Flowroute account.
 
 #####Usage
-
-Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
-
 
 	$response = $inbound->mlist();
 	print_r($response);
@@ -729,16 +766,12 @@ The following information is returned in the response:
 
 #### `createNewRoute ($routeName,$type,$value;)`<a name=createroute></a>
  
-The `createNewRoute` method is used to create a new inbound route.
+The `createNewRoute` method is used to create a new inbound route. A new inbound route can then be applied to a phone number using the [`update`](#updateroute) method.
 
 #####Usage
 
-Add the following lines between `use FlowrouteNumbersLib\Models\Route` and `?>`:
-
 	$response = $irc->createNewRoute('routeName','type','value');
 	print_r($response);
-
->**Important:** `$response` is a variable that can be assigned any name of you choose, and of any length; however, the name you choose you must be used consistently within the PHP file.
 
 The method takes the following parameters:
 
