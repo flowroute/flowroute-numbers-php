@@ -19,11 +19,11 @@ The following are required before you can deploy the SDK.
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-### Know your Flowroute phone number
+### Have a code text editor
 
-To create and send a message, you will need your Flowroute phone number, which should be enabled for SMS. If you do not know your phone number, or if you need to verify whether or not it is enabled for SMS, you can find it on the [DIDs](https://manage.flowroute.com/accounts/dids/) page of the Flowroute portal.
+Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
 
-###Download Composer
+### Download Composer
 
 Composer is used to manage the dependencies for the PHP SDK. The Composer installation file, **composer.phar**, can be downloaded from Composer's web site [here](https://getcomposer.org/download). Download, but do not install it; only after first installing the libraries will you install Composer.
 
@@ -100,9 +100,9 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 
 ## Use demo.php<a name=usedemo></a>
 
-A demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials and retrieve information.
+A demo PHP file, **demo.php**, is included with the installed libraries. This file contains a list of the methods and parameters.  You can use this file to run with your API credentials, instantiate all Controllers, and invoke all methods.
 
-To use **demo.php**, open the file with a code text editor, such as *Sublime Text*, and modify parameters if needed or comment out lines. Whether or not you add any parameters or comment out lines, the file can be run as-is by running the following on the command line:
+To use **demo.php**, open the file with a code text editor and modify parameters if needed or comment out lines. Whether or not you add any parameters or comment out lines, the file can be run as-is by running the following on the command line:
 
 	run demo.php
 
@@ -118,11 +118,49 @@ If you do not want to use the file, the following sections describe creating you
 
 ## Create a PHP file to import the Controllers and Models<a name=createphp></a>
 
-The following describes importing the SDK and setting up your API credentials. Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, create and run a PHP file. 
+The following describes importing the SDK and setting up your API credentials.  Importing the SDK allows you to instantiate the [Controllers](#controllers), which contain the methods used to perform tasks with the SDK. In order to do this, you will need to create and run a PHP file. You can create the file either through using a terminal shell or through a code text editor. The sample files in this SDK were created using a code text editor. In the following example, all Controllers are instantiated using a single file:
 
-When creating your own file for running the methods you will need to create one or more files that instantiate the Controllers and the methods. 
+1.	Using a code text editor, create a new file.
 
-The following shows an example of a single PHP file that instantiates all Controllers:
+2.	At the top of the file, add the following line:
+
+		require_once('vendor/autoload.php');
+
+3.	Next add the lines that instatiate the Controllers:
+
+		use FlowrouteNumbersLib\Controllers\InboundRoutesController;
+		use FlowrouteNumbersLib\Controllers\PurchasablePhoneNumbersController;
+		use FlowrouteNumbersLib\Controllers\TelephoneNumbersController;
+		use FlowrouteNumbersLib\APIException;
+
+4.	Add the lines the set variables for each of the Controllers:
+
+		$irc = new InboundRoutesController();
+		$pnc = new PurchasablePhoneNumbersController();
+		$tnc = new TelephoneNumbersController();
+
+5.	Add lines that call the BillingMethod and Route models:
+
+		use FlowrouteNumbersLib\Models\BillingMethod;
+		use FlowrouteNumbersLib\Models\Route;
+		
+6.	Optionally at the end of the file, add a line that prints out a response after invoking a method, allowing you to see the response in the terminal window:
+
+		print_r($response);
+
+ >**Important:** Throughout this SDK, `response` is used in examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. For example, you might have the following:
+>
+>`$blob = $pnc->listAvailableNPAs();`
+>
+>`print_r($blob);`
+
+7.	Save the PHP file in your top-level **flowroute-numbers-php** directory with a .php extension. For example, *mycontrollers.php*.
+
+8.	Add Controller methods as needed. See [Controllers](#controllers).
+
+###Example PHP file
+	
+The following shows an example of a single Python file that imports and instantiates all three Controllers:
 	
 		require_once('vendor/autoload.php');
 	
@@ -138,15 +176,9 @@ The following shows an example of a single PHP file that instantiates all Contro
 		use FlowrouteNumbersLib\Models\BillingMethod;
 		use FlowrouteNumbersLib\Models\Route;
 		
+		print_r($response);
 		
-		
- >**Important:** Throughout this SDK, `response` is used in examples. `response` is a variable name that can be changed to a name of your own choosing. It can support an unlimited number of characters. If you choose to rename `response`, make sure that any method that references that variable name is also changed to use the new name. For example, you might have the following:
->
->`$blob = $pnc->listAvailableNPAs();`
->
->`print_r($blob);`
- 
- You can create your own PHP file using any of the following methods:
+With this in mind, you can then decide the approach you want to take towards creating a file. You can create your own Python file using any of the following options:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
  
@@ -154,10 +186,9 @@ The following shows an example of a single PHP file that instantiates all Contro
  
  3.	Create a unique file for each method. Each file will then contain the lines instantiating the relevant Controller.
 
-TThis SDK describes the third option. However, whichever option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to run a method, run the following on the command line in the **flowroute-numbers-php** directory:
+This SDK describes the second option. However, whichever option you select, the file(s) should be saved in the **flowroute-numbers-php** directory. When you want to invoke a method using a PHP file, in a terminal window run the following on the command line from the **flowroute-numbers-php** directory:
 
 		run <Controller File Name.php>
-
 
 ## Controllers<a name=controllers></a>
 
@@ -179,7 +210,9 @@ However, the method can also be run without passing the parameter name:
 
 	listAreaAndExchange (10,206,3);
 
-Examples in this SDK use the latter method of not passing parameter names.
+References to method parameters in this SDK use the latter method of not passing parameter names.
+
+>**Important:** The SDK displays sample responses. Formatting of the responses is provided for clarity only. They are not intended to show the formatting of your own response. 
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a>
 
@@ -196,19 +229,17 @@ The PurchasablePhoneNumbers Controller supports all of the methods necessary to 
 
 	#List Available NPAs
 	$response = $pnc->listAvailableNPAs();
-	print_r($response);
 	
 	#List Area and Exchange
 	$response = $pnc->listAreaAndExchange();
-	print_r($response);
 	
 	#Search
 	$response = $pnc->search();
+		
 	print_r($response);	
-	
 	?>
 
-Add the following PurchasePhoneNumbersController methods between `$pnc = new PurchasablePhoneNumbersController();` and `?>`. If you do not want to execute a specific method, comment those lines out with `#`
+When creating your own Python file, add each method after `$pnc = new PurchasablePhoneNumbersController();` but before `print_r($response);`. If you do not want to execute a specific method, comment those lines out with `#`. Click each link below to see more information about that method.
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -221,19 +252,23 @@ You can run the file on the command line using the `php <PHP file>` command.
 The `listAvailableNPAs` method allows you to retrieve a list of every NPA (area code) available in Flowroute's phone number inventory.
 #####Usage
 
-	$response = $pnc->listAvailableNPAs();
-	print_r($response);
+Add the following lines to your PHP file:
 
+	#List Available NPAs
+	$response = $pnc->listAvailableNPAs();
+	
 The method can take the following parameter:
 
 | Parameter | Required |Type |Description                           |
 |-----------|----------|-----|--------------------------------|
-| `limit`     | False  |integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPAs are returned. |
+| `limit`     | True  |integer or null| Controls the number of items returned. The maximum number of items is `200`. If `null` is passed instead of a number, a default of ten NPAs are returned. |
 
 ##### Example usage
+
+The following example limits the number of NPAs returned to `3`.
 	
+	#List Available NPAs
 	$response = $pnc->listAvailableNPAs(3);
-	print_r($response);
 
 #####Example response
 For the `listAvailableNPAs(3)` request, the first three NPAs are returned:
@@ -268,30 +303,38 @@ For the `listAvailableNPAs(3)` request, the first three NPAs are returned:
         )
 ```
 
+##### Error response
+
+| Error code | Message  | Description                                                 |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK or APPLICATION/SERVER ERROR|Typically this occurs when a `limit` does not fall within the allowed range of `1` to `200`, or if a negative number was passed. |
+
 #### `listAreaAndExchange ($limit,$npa,$page);`<a name=listnpanxx></a>
 
 The `listAreaAndExchange` method allows you to retrieve a list of every NPANXX (area code and exchange) combination available in Flowroute's phone number inventory.
 
 #####Usage
 
+Add the following lines to your PHP file:
+
+	#List NPA and NXX
 	$response = $pnc->listAreaAndExchange();
-	print_r($response);
 
 The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
 |-----------|----------|--------------|-------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPANXX combinations are returned.                 |
-| `npa`       | False  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
-| `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
+| `limit`     | True    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten NPANXX combinations are returned.                 |
+| `npa`       | True  | integer or null| Three-digit area code or `null` must be used. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`. |
+| `page`      | True  |integer or null  | Sets which page of the results is returned. If a number is not passed, `null` must be used. ` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
 
 ##### Example usage
 
 In the following, a request is made to limit the results to `2`, the NPA to `203` and to display page `3`:
 		
+	#List NPA and NXX
 	$response = $pnc->listAreaAndExchange(2,203,2);
-	print_r($response);
-	
+
 #####Example response
 Based on the example usage above, the following two NPANXX combinations are returned on page 2, organized by NPANXX. 
 
@@ -315,14 +358,30 @@ Based on the example usage above, the following two NPANXX combinations are retu
         )
 )
 ```
+The following shows an example if no results are found for the passed parameters:
+
+	(
+    [links] => stdClass Object
+        (
+            [prev] => /v1/available-tns/npanxxs/?npa=555&limit=2&page=1
+        )
+
+	)
+
+##### Error response
+
+| Error code | Message  | Description                                                 |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK or APPLICATION/SERVER ERROR|Typically this occurs when a `limit` does not fall within the allowed range of `1` to `200`, or if a negative number was passed. |
+
 #### `search ($limit,$npa,$nxx,$page,$ratecenter,$state,$tn);`<a name=searchno></a>
 
 The search method is the most robust option for searching through Flowroute's purchasable phone number inventory. It allows you to search by NPA, NXX, Ratecenter, State, and TN.
 
 #####Usage
 
+	#Search
 	$response = $pnc->search();
-	print_r($response);
 
 The method supports the following parameters:
 
