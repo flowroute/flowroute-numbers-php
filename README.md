@@ -19,7 +19,7 @@ The following are required before you can deploy the SDK.
 
 You will need your Flowroute API credentials (Access Key and Secret Key). These can be found on the **Preferences > API Control** page of the [Flowroute](https://manage.flowroute.com/accounts/preferences/api/) portal. If you do not have API credentials, contact <mailto:support@flowroute.com>.
 
-### Have a code text editor
+### Get a code text editor
 
 Steps in this SDK describe creating one or more script files that allow you to execute the methods. Script files can be created either using a terminal window shell or through using a code text editor. For example, *Sublime Text*. 
 
@@ -81,11 +81,11 @@ Composer is used to manage the dependencies for the PHP SDK. The Composer instal
 	
 			//Tech Prefix
     		//TODO: Replace the $username with an appropriate value
-			public static $username = '1111111';
+			public static $username = 'AccessKey';
 
 			//API Secret Key
 			//TODO: Replace the $password with an appropriate value
-			public static $password = 'm8axLA45yds7kmiC88aOQ9d5caADg6vr';
+			public static $password = 'SecretKey';
 		}
 ```
 
@@ -160,8 +160,10 @@ The following describes importing the SDK and setting up your API credentials.  
 
 ###Example PHP file
 	
-The following shows an example of a single Python file that imports and instantiates all three Controllers:
+The following shows an example of a single PHP file that imports and instantiates all three Controllers:
 	
+		
+		<?php
 		require_once('vendor/autoload.php');
 	
 		use FlowrouteNumbersLib\Controllers\InboundRoutesController;
@@ -178,7 +180,7 @@ The following shows an example of a single Python file that imports and instanti
 		
 		print_r($response);
 		
-With this in mind, you can then decide the approach you want to take towards creating a file. You can create your own Python file using any of the following options:
+With this in mind, you can then decide the approach you want to take towards creating a file. You can create your own PHP file using any of the following options:
  
  1.	Create a single file that contains all of the Controllers and methods, then commenting out the lines for each method you don't want to run.
  
@@ -214,9 +216,11 @@ References to method parameters in this SDK use the latter method of not passing
 
 >**Important:** The SDK displays sample responses. Formatting of the responses is provided for clarity only. They are not intended to show the formatting of your own response. 
 
-### PurchasablePhoneNumbersController<a name=purchaseno></a>
+### PurchasablePhoneNumbersController<a name=purchaseno></a> (.\flowroute-numbers-php\src\Controllers)
 
-The PurchasablePhoneNumbers Controller supports all of the methods necessary to search through Flowroute's phone number inventory. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **purchase.php** file contains the following information:
+\\flowroute-numbers-php\src\Controllers
+
+The PurchasablePhoneNumbers Controller contains the methods necessary to search through Flowroute's phone number inventory.  The following shows a sample file named **purchase.php** file, which invokes the Controller's methods:
 
 	<?php
 
@@ -237,9 +241,8 @@ The PurchasablePhoneNumbers Controller supports all of the methods necessary to 
 	$response = $pnc->search();
 		
 	print_r($response);	
-	?>
 
-When creating your own Python file, add each method after `$pnc = new PurchasablePhoneNumbersController();` but before `print_r($response);`. If you do not want to execute a specific method, comment those lines out with `#`. Click each link below to see more information about that method.
+When creating your own PHP file, add each method after `$pnc = new PurchasablePhoneNumbersController();` but before `print_r($response);`. If you do not want to execute a specific method, comment those lines out with `#`. Click each link below to see more information about that method.
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
@@ -261,7 +264,9 @@ The method can take the following parameter:
 
 | Parameter | Required |Type |Description                           |
 |-----------|----------|-----|--------------------------------|
-| `limit`     | True  |integer or null| Controls the number of items returned. The maximum number of items is `200`. If `null` is passed instead of a number, a default of ten NPAs are returned. |
+| `limit`     | False    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten NPANXX combinations are returned.  |
+
+>**Note:** The method can be invoked by passing only `()`, which returns a default `limit` of ten NPAs.
 
 ##### Example usage
 
@@ -271,6 +276,7 @@ The following example limits the number of NPAs returned to `3`.
 	$response = $pnc->listAvailableNPAs(3);
 
 #####Example response
+
 For the `listAvailableNPAs(3)` request, the first three NPAs are returned:
 
 ```sh
@@ -324,9 +330,11 @@ The method takes the following parameters:
 
 | Parameter | Required |Type| Description                                                         |
 |-----------|----------|--------------|-------------------------------------------------|
-| `limit`     | True    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten NPANXX combinations are returned.                 |
-| `npa`       | True  | integer or null| Three-digit area code or `null` must be used. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`. |
-| `page`      | True  |integer or null  | Sets which page of the results is returned. If a number is not passed, `null` must be used. ` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
+| `limit`     | False    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten NPANXX combinations are returned.                 |
+| `npa`       | False  | integer or null| Three-digit area code or `null` must be used. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`. |
+| `page`      | False  |integer or null  | Sets which page of the results is returned. If a number is not passed, `null` must be used. ` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
+
+>**Note:** The method can be invoked by passing only `()`, which sets `null` as the default for all parameters.
 
 ##### Example usage
 
@@ -387,22 +395,24 @@ The method supports the following parameters:
 
 | Parameter  | Required|   Type|          Description                                         |
 |------------|----------|------|--------------------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of items is 200. If neither a number nor `null` are passed, a default of ten NPANXX combinations are returned.                      |
+| `limit`     | False    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten NPANXX combinations are returned.                             |
 | `npa`       | False, unless `nxx` is passed, then `True`.  | integer| Three-digit area code. Limits results to the specified NPA. If `null` is passed, all NPAs are returned. Partial number search is also supported. For example, passing `20` returns all NPA and NXX results that include `20`.|
 | `nxx`       |False  | integer |Three-digit exchange. Limits the results for the specified NXX. If no `nxx` is passed, `null` is used and all results are returned. Partial search is also supported. For example, passing `'45'` for the `nxx` returns exchanges that include `45`. Note that if you pass an `nxx` you must also pass an `npa`. |
-| `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            |
-| `ratecenter` | False |string             | Limits the results to the specified ratecenter.  There is no limit on the number of characters that can be passed, and this field is case-insensitive. |                      |
+| `page`      | False   | integer |Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |            
+| `ratecenter` | False |string   | Limits the results to the specified ratecenter.  This field is case-insensitive. |                      
 | `state`      | False, unless `ratecenter` is passed, then `True`.|string | Limits results to the specified state or Canadian province. Must be formatted using the two-letter state or province/territory abbreviation. This field is case-insensitive.                           |
 | `tn`         | False  |string             | Limits results to the specified telephone number. The phone number must be passed as an 11-digit number formatted as *`1NPAXXXXXX`*.  |
+
+>**Note:** The method can be invoked by passing only `()`, which sets `null` as the default for all parameters. The number of results returned are then limited to a default of ten.
 
 ##### Example Usage
 
 In the following example, a search request sets the `limit` to `3`, `206` for the `npa`, `641` for the `nxx`, `2` for the `page`, `seattle` for the `ratecenter`, `wa` for the `state`, and `null` for the `tn`.
 
+	#Search
 	$response = $pnc->search(3,206,641,2,seattle,wa,null);
-	print_r($response);
 	
-#####Response
+##### Example response
 Based on the passed parameters passed in `search()`, the response returns three results:
 
 ```sh
@@ -468,9 +478,9 @@ Parameter | Description                                             |
 ||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
 
-### TelephoneNumbersController<a name=telephoneno></a>
+### TelephoneNumbersController<a name=telephoneno></a>(.\flowroute-numbers-php\src\Controllers)
 
-The TelephoneNumbersController supports all of the methods necessary to purchase and manage a Flowroute number. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **telephone.php** file contains the following information:
+The TelephoneNumbersController contains the methods necessary to purchase and manage a Flowroute number. The following shows a sample file named **telephone.php** file, which invokes the Controller's methods:
 
 	<?php
 
@@ -487,27 +497,24 @@ The TelephoneNumbersController supports all of the methods necessary to purchase
 	$billing = new BillingMethod('');
 	$number = 'phone number';
 	$response = $tnc->purchase($billing, $number);
-	print_r($response);
-	
+		
 	#List Account Telephone Numbers
 	$response = $tnc->listAccountTelephoneNumbers();
-	print_r($response);
 	
 	#Telephone Number Details
 	$number = 'telephoneNumber';
 	$response = $tnc->telephoneNumberDetails($number);
-	print_r($response);
 	
 	#Update Telephone Number Routes
 	$rtes = '{"routes": [{"name": "primary route name"}, {"name": "failover route name"}]}'; 
 	$response = $tnc->update('number',$rtes);
+		
 	print_r($response);
 	
-	?>
 
-Add any of the following TelephoneNumbersController methods between `$use FlowrouteNumbersLib\Models\BillingMethod;` and `?>`.  If you do not want to execute a specific method, comment those lines out with `#`
+Add any of the following TelephoneNumbersController methods after `use FlowrouteNumbersLib\Models\BillingMethod;`, but before `print_r($response)`. If you do not want to execute a specific method, comment out that method's lines with `#`.
 
-The TelephoneNumbersController supports the following methods:
+The Controller supports the following methods:
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -516,42 +523,43 @@ The TelephoneNumbersController supports the following methods:
 
 #### `purchase ($billing, $number);`<a name=purchaseno></a>
 
-The purchase method is used to purchase a telephone number from Flowroute's inventory.
+The purchase method is used to purchase a telephone number from Flowroute's inventory. To purchase a telephone number you can first invoke the [search](#searchno) method to retrieve a list of available numbers for purchase.
 
 #####Usage
 
+Add the following lines to your PHP file:
+
+	#Purchase a Telephone Number
 	$billing = new BillingMethod('');
 	$number = 'phone number';
 	$response = $tnc->purchase($billing, $number);
-	print_r($response);
 
-Create three variables:
+First, define the variable names used in the method: 
 
 |Variable name    |Required  |Type      |Description|
 |-----------------|----------|----------|-------------------------------------------------------| 
-|`$billing `      | True     | string   |This variable assigns the billing method. An unlimited number of characters can be used. For this example, `$billing` is the name of the variable. |
+|`$billing`      | True     | string   |The variable name assigned to the billing method. An unlimited number of characters can be used. For this example, `$billing` is the name of the variable. |
 |`$number`        | True     | string   | This variable identifies the phone number to purchase. An unlimited number of characters can be used. For this example, `$number` is the name of the variable.|
-|`$response`      | True     | string   | This variable identifies the response to purchase. An unlimited number of characters can be used. For this example, `$response` is the name of the variable.|
 
-The variables then take the following parameters
+Next, define the `$billing` and `number` variables:
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
-| `BillingMethod`   | True     |string  | Sets the billing method applied to the purchased number. This must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
+| `BillingMethod('')`   | True     |string  | Sets the billing method for the purchased number. This must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
 | `phone number` | True    | string | The telephone number to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 	
 ##### Example Usage
 
-For the following example, a new number is purchased using `VPRI` for the billing method:
+In the following example, a new number is purchased using `VPRI` for the billing method:
 
+	#Purchase a Telephone Number
 	$billing = new BillingMethod('VPRI');
 	$number = '12066417848';
 	$response = $tnc->purchase($billing, $number);
-	print_r($response);
 
 #####Example response
 
-If the purchase is successful, a **201 Created** and empty message string are returned indicating the date on which the purchase occurred:
+If the purchase is successful, a **201 Created** and empty body are returned indicating the date on which the purchase occurred:
 
 		(
    		 [code] => 201
@@ -566,7 +574,13 @@ If the purchase is successful, a **201 Created** and empty message string are re
    	         [Content-Length] => 0
     	        [Connection] => keep-alive
   	    	  )
+		)
 
+##### Error response
+
+| Error code | Message  | Description                                                 |
+|------------|----------|-------------------------------------------------------|
+|No error code.  |HTTP Response Not OK|The phone number to purchase might already have been purchased, or the number might have been entered incorrectly.|
 
 ####`listAccountTelephoneNumbers ($limit,$page,$pattern);`<a name=listnumbers></a>
 
@@ -574,26 +588,28 @@ The `listAccountTelephoneNumbers` method is used to retrieve a list of all of th
 
 #####Usage
 
+	#List Account Telephone Numbers
 	$response = $tnc->listAccountTelephoneNumbers();
-	print_r($response);
+
+>**Note:** The method can be invoked by passing only `()`, which sets `null` as the default for all parameters. The number of results returned are then limited to a default of ten.
 
 The method takes the following parameters:
 
 | Parameter | Required |     Type | Description                                    |
 |-----------|----------|-----------|-----------------------------------------------|
-| `limit`     | False    | integer| Controls the number of items returned. The maximum number of phone numbers is 200. If neither a number nor `null` are passed, a default of ten numbers are returned.                      
-| `page`      | False  |integer  | Sets which page of the results is returned.` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
+| `limit`     | False    | integer or null| Controls the number of items returned. Either a number between `1` and `200` must be used, or `null`.  If `null` is passed instead of a number, a default of ten telephone numbers are returned.                 |
+| `page`      | False  |integer or null  | Sets which page of the results is returned. If a number is not passed, `null` must be used. ` Next` and `Prev` URLs provided at the bottom of the response provide navigation pointers. If `null` is passed, all pages are returned.   |
 | pattern   | False | string  | The phone number on which to search. Partial number search is supported; for example, if `206` is passed the response returns all phone numbers which include `206`. If neither a number nor `null` are passed, all numbers associated with the account are returned.  |
 
 ##### Example Usage
 For this example, the `limit` is `1`, the `page` is `null`, and the `pattern` includes `206`.
 	
+	#List Account Telephone Numbers
 	$response = $tnc->listAccountTelephoneNumbers(1,null,206);
-	print_r($response);
 
 #####Example response
 
-Based on the passed parameters, the number purchased using the [purchase](#purhcaseno) method above is returned as the response:
+Based on the parameters passed above, details about the telephone number are returned in the response:
 
 	(
     [tns] => stdClass Object
@@ -637,29 +653,33 @@ Parameter | Description                                             |
 
 #### `telephoneNumberDetails($number);`<a name=phonedetails></a>
 
-The telephoneNumberDetails method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
+The `telephoneNumberDetails` method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
 
-#####Usage
+##### usage
 
+		#Telephone Number Details
 		$number = 'telephoneNumber';
 		$response = $tnc->telephoneNumberDetails($number);
-		print_r($response);
 
->**Note:** `$number` and `$response` can be any name of your choosing, and of any length, but the name you choose must be used consistently in the PHP file.
-
-The method takes the following parameter:
+First, define the variable name that identifies the telephone number: 
 
 | Parameter       | Required | Type   |Description                                    |
 |-----------------|----------|--------|-------------------------------------------|
-| `telephoneNumber` | True     | string |    The telephone number on which to query. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*. Neither partial number search nor multiple number search are supported. |
+|`$number`        | True     | string   | This variable name identifies the phone number for which you want to retrieve details. An unlimited number of characters can be used. For this example, `$number` is used.|
+
+Next, define the `number` variable:
+
+| Parameter       | Required | Type   |Description                                    |
+|-----------------|----------|--------|-------------------------------------------|
+| `telephoneNumber` | True     | string |    The Flowroute telephone number on which to query. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*. Neither partial number search nor multiple number search are supported. |
 
 ##### Example Usage
 
-For the following example, the number purchased using the [purchase](#purchaseno) method is passed in the request:
+In the following example, the number purchased using the [purchase](#purchaseno) method is passed in the request:
 
+	#Telephone Number Details
 	$number = '12066417848';
 	$response = $tnc->telephoneNumberDetails($number);
-	print_r($response);
 
 #####Example response
 	(
@@ -696,24 +716,28 @@ The `update` method is used to update both the primary and failover route for a 
 
 #####Usage
 
+	#Update Routes
 	$rtes = '{"routes": [{"name": "primary route name"}, {"name": "failover route name"}]}'; 
 	$response = $tnc->update('number',$rtes);
-	print_r($response);
 
->**Important:** `$rtes` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use those names consistently within the PHP file.
-
-The method takes the following parameters:
+First, define the variable name that identifies the array:
 
 | Parameter       | Required | Type |Description |                                                     
 |-----------------|----------|-------|----------------------------------------------------------|
-|`name='route name'`|True| string| Name of an existing route. The first `name` in the array will be assigned the primary route; the second `name` in the array will be assigned the secondary, or failover, route. 
+|`rtes`|True| string| Variable name that identifies the array. This field can be of unlimited characters. In this example, `rtes` is used.|
+
+Next, define the variables that compose the array:
+
+| Parameter       | Required | Type |Description |                                                     
+|-----------------|----------|-------|----------------------------------------------------------|
+|`primary/failover route name`|True| string| Name of a current route. The first `"Name"` in the array will be assigned the primary route; the second `"Name"` will be assigned the secondary, or failover, route. |
 | `number` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
 
 ##### Example Usage
 	
+	#Update Routes
 	$rtes = '{"routes": [{"name": "HOSTroute1"}, {"name": "PSTNroute1"}]}'; 
 	$response = $tnc->update('12064205780',$rtes);
-	print_r($response);
 	
 #####Example response
 
@@ -725,9 +749,9 @@ No confirmation message is returned for a successful update. To view the route c
 |------------|----------|-------------------------------------------------------|
 |No error code.  |HTTP Response Not OK|This can be caused when a route does not exist, a route name has been misspelled, or an incorrect phone number was passed in the PHP file.|
 
-###InboundRoutesController<a name=inboundco></a>
+###InboundRoutesController<a name=inboundco></a>(.\flowroute-numbers-php\src\Controllers)
 
-The InboundRoutesController supports the methods required to view all of your existing inbound routes and to create new inbound routes. Methods must be added to a PHP file and that file run from a command line. For example, you can create a **routes.php** file that must contain the following information:
+The InboundRoutesController contains the methods required to view all of your existing inbound routes and to create new inbound routes. The following shows a sample file named **routes.php** file, which invokes the Controller's methods:
 
 	<?php
 
@@ -742,15 +766,14 @@ The InboundRoutesController supports the methods required to view all of your ex
 	
 	#List Routes
 	$response = $inbound->mlist();
-	print_r($response);
 	
 	#Create a New Route
 	$response = $irc->createNewRoute('routeName','type','value');
+	
 	print_r($response);
 
-	?>
 
-Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `?>`. If you do not want to execute a specific method, comment those lines out with `#`.
+Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `print_r($Response)`. If you do not want to execute a specific method, comment out that method's lines with `#`.
 
 The Controller supports the following methods:
 
@@ -763,10 +786,11 @@ The list method is used to return all of the existing inbound routes from your F
 
 #####Usage
 
+	#List Routes
 	$response = $inbound->mlist();
-	print_r($response);
 
->**Important:**  `$inbound` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use the names consistently within the PHP file.
+
+>**Important:**  `$inbound` and `$response` are variables that can be assigned any name of you choose, and of any length; however, you must use the names consistently within the method.
 
 The method takes the following parameters:
 
@@ -779,9 +803,9 @@ The method takes the following parameters:
 
 For this example, a `limit` of `4` routes  and the `page` to return set to `null` are passed.
 
+	$List Routes
 	$inbound = new InboundRoutesController();
 	$response = $inbound->mlist(4,null);
-	print_r($response);
 	
 #####Example response
 
@@ -829,8 +853,8 @@ The `createNewRoute` method is used to create a new inbound route. A new inbound
 
 #####Usage
 
+	#Create a New Route
 	$response = $irc->createNewRoute('routeName','type','value');
-	print_r($response);
 
 The method takes the following parameters:
 
@@ -844,12 +868,15 @@ The method takes the following parameters:
 
 You can pass as many `createNewRoute` methods in a single operation. The following example creates new `PSTN`, `HOST`, and `URI` routes:
 
+	#Create a New Route
 	$response = $irc->createNewRoute('PSTNroute2','PSTN','12066417848');
 	print_r($response);
 	$response = $irc->createNewRoute('HOSTroute2','HOST','4.239.23.40:5060');
 	print_r($response);
 	$response = $irc->createNewRoute('URIroute2','URI','sip:12066417848@215.122.69.152:5060');
 	print_r($response);
+
+>**Note**: In the example above, `print_r($response);` is added after each line. This returns a success or error response for each line.
 	
 #####Example response
 
