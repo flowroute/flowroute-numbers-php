@@ -218,8 +218,6 @@ References to method parameters in this SDK use the latter method of not passing
 
 ### PurchasablePhoneNumbersController<a name=purchaseno></a> (.\flowroute-numbers-php\src\Controllers)
 
-\\flowroute-numbers-php\src\Controllers
-
 The PurchasablePhoneNumbers Controller contains the methods necessary to search through Flowroute's phone number inventory.  The following shows a sample file named **purchase.php** file, which invokes the Controller's methods:
 
 	<?php
