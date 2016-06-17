@@ -475,6 +475,11 @@ Parameter | Description                                             |
 ||	`ratecenter`- The ratecenter associated with the NPANXX.|
 ||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
+#####Error response
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a passed value does not fall within the range of allowed values. For example, this might be a `limit` that does not fall within the `1` to `200` range. |
 
 ### TelephoneNumbersController<a name=telephoneno></a>(.\flowroute-numbers-php\src\Controllers)
 
@@ -649,6 +654,12 @@ Parameter | Description                                             |
 ||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
+#####Error response
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `limit` does not fall within the allowed number range, such as greater than `200` or a negative number; or if `0` or a negative number are passed for the `page`. |
+
 #### `telephoneNumberDetails($number);`<a name=phonedetails></a>
 
 The `telephoneNumberDetails` method is used to retrieve the billing method, primary route, and failover route for the specified telephone number. 
@@ -705,6 +716,14 @@ Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
 |`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
 |`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
+
+#####Error response
+
+##### Error response
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code.  |HTTP Response Not OK|This can be caused when an incorrect phone number is entered, or a number not owned by you is entered.|
 
 #### `update ($number, $rtes);`<a name=updateroute></a>
 
@@ -844,6 +863,12 @@ The following information is returned in the response:
 | Parameter |  Description                                                     |
 |-----------|--------------------------------------------------------------------------------|
 | `[routeName]` |  The name of the route assigned using the `createNewRoute` method. It is composed of:<ul> <li>`type`  The type of route created using the `createNewRoute` method. Will be `HOST`, `PSTN`, or `URI`. If no route type was assigned, `SIP-REG` is used as the default. <li>`value` Value of the route, assigned to the route `type` using the `createNewRoute` method.</ul</li>|
+
+#####Error response
+
+| Error code | Message  | Description                                           |
+|------------|----------|-------------------------------------------------------|
+|No error code|HTTP Response Not OK|Typically this occurs when a `number` is incorrect, or an incorrect `route name` is passed. |
 
 #### `createNewRoute ($routeName,$type,$value;)`<a name=createroute></a>
  
