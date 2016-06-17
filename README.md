@@ -240,13 +240,13 @@ The PurchasablePhoneNumbers Controller contains the methods necessary to search 
 		
 	print_r($response);	
 
-When creating your own PHP file, add each method after `$pnc = new PurchasablePhoneNumbersController();` but before `print_r($response);`. If you do not want to execute a specific method, comment those lines out with `#`. Click each link below to see more information about that method.
+When creating your own PHP file, add each method after `$pnc = new PurchasablePhoneNumbersController();` but before `print_r($response);`. If you do not want to execute a specific method, comment those lines out with `#`. 
+
+The Controller contains the following methods:
 
 *	[`listAvailableNPAs()`](#listnpa)
 * 	[`listAreaAndExchange()`](#listnpanxx)
 * 	[`search()`](#searchno)
-
-You can run the file on the command line using the `php <PHP file>` command.
 
 #### `listAvailableNPAs ($limit);`<a name=listnpa></a>
 
@@ -512,7 +512,7 @@ The TelephoneNumbersController contains the methods necessary to purchase and ma
 
 Add any of the following TelephoneNumbersController methods after `use FlowrouteNumbersLib\Models\BillingMethod;`, but before `print_r($response)`. If you do not want to execute a specific method, comment out that method's lines with `#`.
 
-The Controller supports the following methods:
+The Controller contains the following methods:
 
 *	[`purchase`](#purchaseno)
 *	[`listAccountTelephoneNumbers`](#listnumbers)
@@ -773,7 +773,7 @@ The InboundRoutesController contains the methods required to view all of your ex
 
 Add the following InboundRoutesController methods between `use FlowrouteNumbersLib\Models\Route;` and `print_r($Response)`. If you do not want to execute a specific method, comment out that method's lines with `#`.
 
-The Controller supports the following methods:
+The Controller contains the following methods:
 
 *	[`mlist`](#listroutes)
 * 	[`createNewRoute`](#createroute)
