@@ -158,10 +158,9 @@ The following describes importing the SDK and setting up your API credentials.  
 
 8.	Add Controller methods as needed. See [Controllers](#controllers).
 
-###Example PHP file
+#####Example PHP file
 	
 The following shows an example of a single PHP file that imports and instantiates all three Controllers:
-	
 		
 		<?php
 		require_once('vendor/autoload.php');
@@ -216,7 +215,9 @@ References to method parameters in this SDK use the latter method of not passing
 
 >**Important:** The SDK displays sample responses. Formatting of the responses is provided for clarity only. They are not intended to show the formatting of your own response. 
 
-### PurchasablePhoneNumbersController<a name=purchaseno></a> (.\flowroute-numbers-php\src\Controllers)
+### PurchasablePhoneNumbersController<a name=purchaseno></a> 
+
+Location: **.\flowroute-numbers-php\src\Controllers**
 
 The PurchasablePhoneNumbers Controller contains the methods necessary to search through Flowroute's phone number inventory.  The following shows a sample file named **purchase.php** file, which invokes the Controller's methods:
 
@@ -481,7 +482,9 @@ Parameter | Description                                             |
 |------------|----------|-------------------------------------------------------|
 |No error code|HTTP Response Not OK|Typically this occurs when a passed value does not fall within the range of allowed values. For example, this might be a `limit` that does not fall within the `1` to `200` range. |
 
-### TelephoneNumbersController<a name=telephoneno></a>(.\flowroute-numbers-php\src\Controllers)
+### TelephoneNumbersController<a name=telephoneno></a>
+
+Location: **.\flowroute-numbers-php\src\Controllers**
 
 The TelephoneNumbersController contains the methods necessary to purchase and manage a Flowroute number. The following shows a sample file named **telephone.php** file, which invokes the Controller's methods:
 
@@ -747,8 +750,8 @@ Next, define the variables that compose the array:
 
 | Parameter       | Required | Type |Description |                                                     
 |-----------------|----------|-------|----------------------------------------------------------|
-|`primary/failover route name`|True| string| Name of a current route. The first `"Name"` in the array will be assigned the primary route; the second `"Name"` will be assigned the secondary, or failover, route. |
-| `number` | True     | string |    The telephone number for which to update the route. You must use an 11-digit, E.164 number, formatted as *`1NPANXXXXXX`*.| 
+|`primary/failover route name`|True| string| Name of a current route. The first `"Name"` in the array will be assigned the primary route; the second `"Name"` will be assigned the secondary, or failover, route. See [`create_new_route`](#createroute) for the steps to create a route.|
+| `number` | True     | string |    The telephone number on which to update the routes. You must use a Flowroute phone number in an 11-digit, E.164 format: *`1NPANXXXXXX`*.| 
 
 ##### Example Usage
 	
@@ -766,7 +769,9 @@ No confirmation message is returned for a successful update. To view the route c
 |------------|----------|-------------------------------------------------------|
 |No error code.  |HTTP Response Not OK|This can be caused when a route does not exist, a route name has been misspelled, or an incorrect phone number was passed in the PHP file.|
 
-###InboundRoutesController<a name=inboundco></a>(.\flowroute-numbers-php\src\Controllers)
+###InboundRoutesController<a name=inboundco></a>
+
+Location: **.\flowroute-numbers-php\src\Controllers**
 
 The InboundRoutesController contains the methods required to view all of your existing inbound routes and to create new inbound routes. The following shows a sample file named **routes.php** file, which invokes the Controller's methods:
 
@@ -821,7 +826,6 @@ The method takes the following parameters:
 For this example, a `limit` of `4` routes  and the `page` to return set to `null` are passed.
 
 	$List Routes
-	$inbound = new InboundRoutesController();
 	$response = $inbound->mlist(4,null);
 	
 #####Example response
