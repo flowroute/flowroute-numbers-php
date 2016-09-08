@@ -424,8 +424,7 @@ Based on the passed parameters passed in `search()`, the response returns three 
                     [monthly_cost] => 1.25
                     [billing_methods] => Array
                         (
-                            [0] => VPRI
-                            [1] => METERED
+                           [1] => METERED
                         )
                     [ratecenter] => SEATTLE
                     [state] => WA
@@ -436,7 +435,6 @@ Based on the passed parameters passed in `search()`, the response returns three 
                     [monthly_cost] => 1.25
                     [billing_methods] => Array
                         (
-                            [0] => VPRI
                             [1] => METERED
                         )
                     [ratecenter] => SEATTLE
@@ -448,7 +446,6 @@ Based on the passed parameters passed in `search()`, the response returns three 
                     [monthly_cost] => 1.25
                     [billing_methods] => Array
                         (
-                            [0] => VPRI
                             [1] => METERED
                         )
                     [ratecenter] => SEATTLE
@@ -472,7 +469,7 @@ Parameter | Description                                             |
 ||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
 ||	<ul><ul><li> `initial_cost`- The one-time fixed cost for that telephone number. The default value is USD `1.00`.</ul>|
 | | <ul><ul><li>`monthly_cost`- The recurring monthly cost to maintain that telephone number. The default value is USD `1.25`.</ul>|
-| |<ul><ul><li>`billing_methods`- Displays the billing methods available for the telephone number: <ul><li>`[0] VPRI`, or</ul></li> <ul><li>`[1] METERED` </ul></li>|
+| |<ul><ul><li>`billing_methods`- Displays the telephone number's billing method. This will only be `[1] METERED`.|
 ||	`ratecenter`- The ratecenter associated with the NPANXX.|
 ||	`state`- The US state or Canadian province or territory in which the NPANXX is located.</ol>|
 
@@ -551,15 +548,15 @@ Next, define the `$billing` and `number` variables:
 
 | Parameter       | Required | Type|Description                                                 |                                                          
 |-----------------|----------|--------|-------------------------------------------------------|
-| `BillingMethod('')`   | True     |string  | Sets the billing method for the purchased number. This must be one of the following: <ul><li>`METERED` — unlimited concurrent calls, each billed per-minute used.</li> <li> `VPRI` — limits the number of concurrent calls to the number of VPRI channels you have, but with unlimited usage on each channel. </li></ul>|       
+| `BillingMethod('')`   | True     |string  | Sets the billing method for the purchased number. This can only  be `METERED`, which are unlimited concurrent calls, each billed per-minute used.|       
 | `phone number` | True    | string | The telephone number to purchase, using an E.164 *`1NPANXXXXXX`* format.                |
 	
 ##### Example Usage
 
-In the following example, a new number is purchased using `VPRI` for the billing method:
+In the following example, a new number is purchased:
 
 	#Purchase a Telephone Number
-	$billing = new BillingMethod('VPRI');
+	$billing = new BillingMethod('METERED');
 	$number = '12066417848';
 	$response = $tnc->purchase($billing, $number);
 
@@ -622,7 +619,7 @@ Based on the parameters passed above, details about the telephone number are ret
         (
             [12066417848] => stdClass Object
                 (
-                    [billing_method] => VPRI
+                    [billing_method] => METERED
                     [routes] => Array
                         (
                             [0] => stdClass Object
@@ -654,7 +651,7 @@ Parameter | Description                                             |
 |--------|-------------------------------------------------------|
 | `tns`  | Object composed of a `telephone number`, `billing_method`, and `routes`.|                           
 ||	*`telephone number`*- The retrieved telephone number object, which is composed of:|
-||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.</ul>|
+||	<ul><ul><li> `billing_method`- The billing method assigned to the phone number when the number was purchased. This will only be `METERED`.</ul>|
 | |<ul><ul><li>`routes`- Displays the primary `[0]` and failover `[1]` routes for the phone number: <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</ul></li> <ul><li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the assigned default name.</ul></li> **Note:** Routes are created using the [createNewRoute](#createroute) method and existing routes can be viewed using the [mlist](#listroutes) method.|
 
 #####Error response
@@ -695,7 +692,7 @@ In the following example, the number purchased using the [purchase](#purchaseno)
 
 #####Example response
 	(
-    [billing_method] => VPRI
+    [billing_method] => METERED
     [routes] => Array
         (
             [0] => stdClass Object
@@ -717,10 +714,9 @@ The following information is returned in the response:
 
 Parameter | Description                                             |
 |--------|-------------------------------------------------------|                       
-|`billing_method`| The billing method assigned to the phone number when the number was purchased. This will be either `METERED` or `VPRI`.|
+|`billing_method`| The billing method assigned to the phone number when the number was purchased. This will only be `METERED`.|
 |`routes` |Displays the primary `[0]` and failover `[1]` routes for the phone number:<br> <ul><li>`type` — Indicates the type of route: `HOST`, `PSTN`, or `URI`. If no route is assigned, `SIP-REG` is the default name assigned to the route.</li> <li>`name` — Name of the route. If no `name` was given to the route, `sip-reg` is the default name.</ul></li>**Note:** Routes are created using the [createNewRoute](#createroute) method and can be assigned using the `update` method.|
 
-#####Error response
 
 ##### Error response
 
