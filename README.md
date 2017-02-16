@@ -104,7 +104,7 @@ A demo PHP file, **demo.php**, is included with the installed libraries. This fi
 
 To use **demo.php**, open the file with a code text editor and modify parameters if needed or comment out lines. Whether or not you add any parameters or comment out lines, the file can be run as-is by running the following on the command line:
 
-	run demo.php
+	php demo.php
 
 For information on the parameters within the file, see the applicable Controller information:
 
