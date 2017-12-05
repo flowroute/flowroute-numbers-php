@@ -95,11 +95,12 @@ class PurchasablePhoneNumbersController {
     /**
      * Retrieves a list of all NPAs (area codes) that contain purchasable telephone numbers.
      * @param  int     $limit     Required parameter: Number of items to display (Max 200).
+     * @param  int|null     $page      Optional parameter: Page to display
      * @return mixed response from the API call
      * @throws APIException
      **/
     public function listAvailableNPAs (
-                $limit) 
+                $limit,$page=NULL) 
     {
         //the base uri for api requests
         $queryBuilder = Configuration::$BASEURI;
@@ -110,6 +111,7 @@ class PurchasablePhoneNumbersController {
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($queryBuilder, array (
             'limit' => $limit,
+            'page'  => $page,
         ));
 
         //validate and preprocess url
