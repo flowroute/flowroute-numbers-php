@@ -193,14 +193,16 @@ class TelephoneNumbersController {
         
     /**
      * Updates the routing information for a telephone number on your account, as indicated by the specified URI. The body of the request requires two routes listed in order of preference (primary first and fail over second).
-     * @param  string     $number     Required parameter: The telephone number who's routing you wish to update
-     * @param  array      $routes     Required parameter: JSON string containing the The routes obtained from the routes resource that you would like to point your telephone number to.
+     * @param  string     $number           Required parameter: The telephone number who's routing you wish to update
+     * @param  string     $primary_route    Required parameter: Name of the preffered primary route
+     * @param  string     $secondary_route  Required parameter: Name of the preffered failover route
      * @return string response from the API call
      * @throws APIException
      **/
     public function update (
                 $number,
-                $routes) 
+                $primary_route,
+                $secondary_route) 
     {
         //the base uri for api requests
         $queryBuilder = Configuration::$BASEURI;
@@ -221,9 +223,11 @@ class TelephoneNumbersController {
             'user-agent'    => 'Flowroute SDK 1.0',
             'content-type'  => 'application/json; charset=utf-8'
         );
-
+        
+        $body = '{"routes": [{"name": "' . $primary_route . '"}, {"name": "' . $secondary_route . '"}]}';
+        
         $response = CustomAuthUtility::appendCustomAuthParams('PATCH',
-            $queryUrl, $headers, $routes, $this->username, $this->password);
+            $queryUrl, $headers, $body, $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
