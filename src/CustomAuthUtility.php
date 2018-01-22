@@ -15,16 +15,22 @@ class CustomAuthUtility {
     * @param    string  $query_url  The url to send the query to
     * @param    array   $headers    Header array to send in the request
     * @param    string  $body       Message body to send
+    * @param    string  $username   API access key
+    * @param    string  $password   API secret key
     * @return   response from HTTP request
     */
     public static function appendCustomAuthParams(
         $method = 'GET',
         $query_url=NULL,
         $headers=array(),
-        $body='')
+        $body='',
+        $username=NULL,
+        $password=NULL)
     {
-
         if (!isset($query_url)) { $query_url = Configuration::$BASEURI; }
+        if (!isset($username)) { $username = Configuration::$username; }
+        if (!isset($password)) { $password = Configuration::$password; }
+       
         $timestamp = gmdate('Y-m-d\TH:i:s');
         $headers['X-Timestamp'] = $timestamp;
         $parsedurl = parse_url($query_url);
@@ -45,23 +51,23 @@ class CustomAuthUtility {
         $message_string .= $method . PHP_EOL;
         $message_string .= $body_md5 . PHP_EOL . $canonicalUri;
         $message_string = utf8_encode($message_string);
-        $signature = hash_hmac('sha1', $message_string, Configuration::$password);
+        $signature = hash_hmac('sha1', $message_string, $password);
 
         switch (strtoupper($method)) {
             case 'GET':
-                $request = Unirest::get($query_url, $headers, NULL, Configuration::$username, $signature);
+                $request = Unirest::get($query_url, $headers, NULL, $username, $signature);
                 break;
             case 'POST':
-                $request = Unirest::post($query_url, $headers, $body, Configuration::$username, $signature);
+                $request = Unirest::post($query_url, $headers, $body, $username, $signature);
                 break;
             case 'PUT':
-                $request = Unirest::put($query_url, $headers, $body, Configuration::$username, $signature);
+                $request = Unirest::put($query_url, $headers, $body, $username, $signature);
                 break;
             case 'PATCH':
-                $request = Unirest::patch($query_url, $headers, $body, Configuration::$username, $signature);
+                $request = Unirest::patch($query_url, $headers, $body, $username, $signature);
                 break;
             case 'DELETE':
-                $request = Unirest::delete($query_url, $headers, $body, Configuration::$username, $signature);
+                $request = Unirest::delete($query_url, $headers, $body, $username, $signature);
                 break;
             default:
                 trigger_error("Invalid method supplied.", E_USER_ERROR);

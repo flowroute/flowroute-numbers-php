@@ -12,7 +12,6 @@ use FlowrouteNumbersLib\APIHelper;
 use FlowrouteNumbersLib\Configuration;
 use FlowrouteNumbersLib\CustomAuthUtility;
 use FlowrouteNumbersLib\Models\BillingMethod;
-use Unirest\Unirest;
 
 class TelephoneNumbersController {
 
@@ -35,8 +34,8 @@ class TelephoneNumbersController {
      */
     function __construct($username=null, $password=null)
     {
-        $this->username = $username ? $username : Configuration::$username;
-        $this->password = $password ? $password : Configuration::$password;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -68,7 +67,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('GET',
-            $queryUrl, $headers);
+            $queryUrl, $headers, '', $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -118,7 +117,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
-            $queryUrl, $headers, $billing->jsonSerialize());
+            $queryUrl, $headers, $billing->jsonSerialize(), $this->username, $this->password);
 
         print_r($response);
 
@@ -174,7 +173,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('GET',
-            $queryUrl, $headers);
+            $queryUrl, $headers, '', $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -224,7 +223,7 @@ class TelephoneNumbersController {
         );
 
         $response = CustomAuthUtility::appendCustomAuthParams('PATCH',
-            $queryUrl, $headers, $routes);
+            $queryUrl, $headers, $routes, $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {
@@ -241,5 +240,4 @@ class TelephoneNumbersController {
 
         return $response->body;
     }
-        
 }
