@@ -8,5 +8,5 @@
 * Update the primary and failover route on a phone number
 
 ### Documentation 
-To work with the SDK, please read and follow the steps [here](http://developer.flowroute.com/libraries/php/).
+To work with the SDK, please read and follow the steps in the [Flowroute PHP Library v1](http://developer.flowroute.com/libraries/v1/php/).
 
