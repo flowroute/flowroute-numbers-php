@@ -11,7 +11,6 @@ use FlowrouteNumbersLib\APIException;
 use FlowrouteNumbersLib\APIHelper;
 use FlowrouteNumbersLib\Configuration;
 use FlowrouteNumbersLib\CustomAuthUtility;
-use Unirest\Unirest;
 
 class InboundRoutesController {
 
@@ -34,8 +33,8 @@ class InboundRoutesController {
      */
     function __construct($username=null, $password=null)
     {
-        $this->username = $username ? $username : Configuration::$username;
-        $this->password = $password ? $password : Configuration::$password;
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -72,7 +71,7 @@ class InboundRoutesController {
 
         //append custom auth authorization headers
         $response = CustomAuthUtility::appendCustomAuthParams('GET',
-            $queryUrl, $headers);
+            $queryUrl, $headers, '', $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 401) {
@@ -126,7 +125,7 @@ class InboundRoutesController {
 
         //and invoke the API call request to fetch the response
         $response = CustomAuthUtility::appendCustomAuthParams('PUT',
-            $queryUrl, $headers, $body);
+            $queryUrl, $headers, $body, $this->username, $this->password);
 
         //Error handling using HTTP status codes
         if ($response->code == 400) {

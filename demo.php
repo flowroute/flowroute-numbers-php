@@ -4,9 +4,6 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
 require_once('vendor/autoload.php');
-foreach (glob('src/*.php') as $filename){require_once $filename;}
-foreach (glob('src/Controllers/*.php') as $filename){require_once $filename;}
-foreach (glob('src/Models/*.php') as $filename){require_once $filename;}
 
 use FlowrouteNumbersLib\Controllers\InboundRoutesController;
 use FlowrouteNumbersLib\Controllers\PurchasablePhoneNumbersController;
@@ -16,9 +13,15 @@ use FlowrouteNumbersLib\Models\BillingMethod;
 
 print "Number Control Demo." . PHP_EOL;
 
-//--- Purchasable Phone Numbers
-// Create our controller
-$pnc = new PurchasablePhoneNumbersController();
+// Flowroute API Access Key and Secret Key
+$access_key = '78675316';
+$secret_key = 'i0WRu1eHXolvfTGv1RIIsrkRfVGJLn0Q';
+
+// Create our controllers
+$pnc = new PurchasablePhoneNumbersController($access_key, $secret_key);
+$tnc = new TelephoneNumbersController($access_key, $secret_key);
+$irc = new InboundRoutesController($access_key, $secret_key);
+
 
 // Retrieve Available NPAs
 print("--Retrieve Available NPAs\n");
@@ -27,87 +30,37 @@ print_r($response);
 
 // Retrieve Available NPA NXXs
 print("--Retrieve Available NPA NXXs\n");
-$response = $pnc->listAreaAndExchange();
-print_r($response);
+try {
+  $response = $pnc->listAreaAndExchange();
+  print_r($response);
+} catch(APIException $e) {
+  print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+}
 
 // Search for purchasable Numbers
 print("--Search for numbers in Seattle Washington\n");
-$response = $pnc->search(10,206,641,null,'seattle','wa',null);
-print_r($response);
-
-
-//--- Telephone Numbers
-// Create our controller
-$tnc = new TelephoneNumbersController();
-
-// Purchase a Phone Number
-print("--Purchase a Phone Number\n");
-$billing = new BillingMethod('METERED');
-
-$number = '12066417661';
-
 try {
-    $response = $tnc->purchase($billing, $number);
-    print_r($response);
+  $response = $pnc->search(10,206,641,null,'seattle','wa',null);
+  print_r($response);
 } catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+  print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
 }
 
 // List Account Phone Numbers
 print("--List Account Phone Numbers\n");
 try {
-    $response = $tnc->listAccountTelephoneNumbers();
-    print_r($response);
+  $response = $tnc->listAccountTelephoneNumbers();
+  print_r($response);
 } catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+  print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
 }
-
-// Retrieve Phone Number Details
-print("--Retrieve Number Details\n");
-try {
-    $response = $tnc->telephoneNumberDetails($number);
-    print_r($response);
-} catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
-}
-
-
-//--- Inbound Routes
-// Create our controller
-$inbound = new InboundRoutesController();
 
 // Retrieve Routes
 print("--Retrieve Inbound Routes\n");
 try {
-	$response = $inbound->mlist();
-	print_r($response);
+  $response = $irc->mlist();
+  print_r($response);
 } catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
+  print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
 }
-
-// Create Route
-print("--Create New Inbound Route\n");
-try {
-	$routename = 'PSTNroute1';
-	$routetype = 'PSTN';
-	$routevalue = '12065551212';
-	$response = $inbound->createNewRoute($routename, $routetype, $routevalue);
-	print_r("New Inbound Route Successfully Created\n");
-} catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
-}
-
-//update routes
-print("--Update TN's Primary and Failover Route\n");
-try {
-	$rtes = '{"routes": [{"name": "PSTNroute1"}, {"name": "PSTNroute1"}]}';
-	$tn = "19515551212"; 
-	$response = $tnc->update($tn, $rtes);
-	print_r($response);
-} catch(APIException $e) {
-    print("Error - " . strval($e->getResponseCode()) . ' ' . $e->getMessage() . PHP_EOL);
-}
-
-
-
 
